@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 
+import AuthService from "../services/auth.service";
 import { Button ,Card, CardContent, Grid, FormControl, Typography, TextField } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
 
@@ -8,11 +9,14 @@ import { Face } from '@material-ui/icons';
 const style = {
   root: {
     minWidth: 275,
-    backgroundColor:'darkred',
+   
     marginTop: 20,
-    color: '#e0f7fa'
+    color: 'black'
   },
-  pwd:{pwd:"red"}
+  pwd:{
+    color:"red",
+    fontSize:"10px"
+  }
 }
 
 export default class Register extends Component {
@@ -81,26 +85,41 @@ else
 }
   
 
-  handleRegister = (e) => {
-    e.preventDefault();
+  
+handleRegister = (e) => {
+  e.preventDefault();
 
-    if (this.state.username && this.state.email && this.state.password) {
-      console.log(this.state.username + " " + this.state.password + " " + this.state.email)
+  this.setState({
+    message: "",
+    successful: false
+  });
+
+  AuthService.register(
+    this.state.username,
+    this.state.email,
+    this.state.password
+  ).then(
+    response => {
       this.setState({
-        successful: true,
-        message: "Registered successfully"
-      })
-      localStorage.setItem("username",this.state.username)
-      localStorage.setItem("email",this.state.email)
+        message: response.data.message,
+        successful: true
+      });
+    },
+    error => {
+      const resMessage =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
 
-
-    } else {
       this.setState({
         successful: false,
-        message: "username/password/email is empty"
-      })
+        message: resMessage
+      });
     }
-  }
+  );
+}
 
   render() {
     localStorage.setItem('roles',"ROLE_ADMIN")
@@ -115,7 +134,7 @@ else
                   {!this.state.successful && (
                   <Grid container spacing={1}>
                       <Grid item xs={12}>
-                        <Face style={{ fontSize: 80 }}/>
+                        {/* <Face style={{ fontSize: 80 }}/> */}
                       </Grid>
                       
                       <Grid item xs={12}>
@@ -141,7 +160,7 @@ else
                       </Grid>
                       <Grid item xs={12}>
                         <FormControl>
-                          <Button color="primary">Sign Up</Button>
+                          <Button type="submit" color="primary">Sign Up</Button>
                         </FormControl>
                       </Grid>
                   </Grid>
@@ -164,3 +183,4 @@ else
     );
   }
 }
+
