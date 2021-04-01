@@ -26,63 +26,24 @@ import com.example.sajeenthiran.model.response.MessageResponse;
 import com.example.sajeenthiran.repository.CustomRepository;
 import com.example.sajeenthiran.repository.MainComRepository;
 import com.example.sajeenthiran.repository.SubComRepository;
+import com.example.sajeenthiran.service.ComService;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/com")
 public class ComController {
 
-@Autowired
-SubComRepository subComRepostiory;
-
-@Autowired
-MainComRepository mainComRepository;
-
-@Autowired
-CustomRepository customRepository;
+	
+	@Autowired
+	ComService comService;
 
 @PostMapping
 public ResponseEntity<?> createCommunity(@Valid @RequestBody MainCommunity mainCom) {
-try {
-	System.out.println(mainCom);
-	if (mainComRepository.existsByName(mainCom.getName())) {
-		return ResponseEntity.badRequest()
-				.body(new MessageResponse("Error: Username is already taken!"));
-	}
-	else{	System.out.println(mainCom);
-//		long id=customRepository.getMaxEmpId()+1;
-	System.out.println(mainCom);
-	
-	
-	MainCommunity newMainCom=new MainCommunity(mainCom.getId(),mainCom.getName(),mainCom.getNumMembers(),
-			mainCom.getMotto(),mainCom.getBankAcc());
-	newMainCom.setSubCom(mainCom.getSubCom());
-	mainComRepository.save(newMainCom);
-	
-
-List<SubCom> subCom=new ArrayList<>();
-subCom.addAll(mainCom.getSubCom());
-subComRepostiory.saveAll(subCom);
-	return  new ResponseEntity<>(newMainCom, HttpStatus.CREATED);
-			}
-	
-}catch (Exception e) {
-    return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
-}
+ return comService.createMainCommunity(mainCom);
 }
 
 
 @GetMapping
 public ResponseEntity<List<MainCommunity>>getAllMainCommunity(){
-	try {
-	    List<MainCommunity> mainCommunities = new ArrayList<MainCommunity>();
-	    mainComRepository.findAll().forEach(mainCommunities::add);
-	
-	    if (mainCommunities.isEmpty()) {
-	      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	    }
-	    return new ResponseEntity<>(mainCommunities, HttpStatus.OK);
-	} catch (Exception e) {
-	    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
+	return comService.getMainCom();
 }}

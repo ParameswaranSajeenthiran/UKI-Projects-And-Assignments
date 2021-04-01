@@ -27,6 +27,7 @@ public class CustomRepository {
         if (maxObject == null) {
             return 0L;
         }
+        System.out.println(maxObject.getId());
         return maxObject.getId();
     }
     
