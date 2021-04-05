@@ -14,6 +14,7 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import SubCommunity from './SubCommunity';
+import Axios from 'axios';
 
 function Copyright() {
   return (
@@ -83,11 +84,11 @@ function getStepContent(step) {
 export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
-
+const [name,SetName]=React.useState("");
   const handleNext = () => {
     setActiveStep(activeStep + 1);
 
-    
+  
   };
 
   const handleBack = () => {
@@ -108,7 +109,7 @@ export default function Checkout() {
      {activeStep===steps.length?( <SubCommunity/>):( <main className={classes.layout}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h4" align="center">
-            Ceate a New Community
+            Ceate a New Community{name}
           </Typography>
           <Stepper activeStep={activeStep} className={classes.stepper}>
             {steps.map((label) => (
@@ -144,7 +145,7 @@ export default function Checkout() {
                     onClick={handleNext}
                     className={classes.button}
                   >
-                    {activeStep === steps.length - 1 ? 'Submit' : 'Submit'}
+                    {activeStep === steps.length - 1 ? 'Submit' : 'next'}
                   </Button>
                 </div>
               </React.Fragment>

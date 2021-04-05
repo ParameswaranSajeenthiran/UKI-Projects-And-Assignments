@@ -4,6 +4,7 @@ import React, { Component } from "react";
 import AuthService from "../services/auth.service";
 import { Button ,Card, CardContent, Grid, FormControl, Typography, TextField } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
+import SignInSide from "./SignUp";
 
 
 const style = {
@@ -125,6 +126,7 @@ handleRegister = (e) => {
     localStorage.setItem('roles',"ROLE_ADMIN")
     return (
       <Grid container>
+      <SignInSide/>
         <Grid item xs={4}/>
         
         <Grid item xs={3}>

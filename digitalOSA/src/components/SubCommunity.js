@@ -10,7 +10,7 @@ import Container from "./Container";
 import { TextField,Button,FormControl } from "@material-ui/core";
 import CreateSubCommunity from "./CreateSubCommunity";
 
-
+import axios from 'axios'
 
 import GoogleChart from "./GoogleCharts";
 import SearchCommunity from "./SearchCommunity";
@@ -29,7 +29,44 @@ const style = {
     }
    
   }
+  const communities1=[
+    {
+    name:"D.S.senanayake college",
+    subCom:[
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    }
+    ]
+  },
+  {
+    name:"D.S.senanayake college",
+    subCom:[
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    },
+    {
+      name:"Art club"
+    }
+    ]
+  }
   
+  
+  ]
   
   const subCommunity=[
     {name:"A/L 2020",
@@ -52,10 +89,26 @@ const style = {
 class SubCommunity extends Component{
     constructor(props){
         super(props);
-    
+    this.state={
+      communities:""
+    }
         }
+        // componentDidMount(){
+        //   axios.get('http://localhost:8080/departments')
+        //       .then(response=>{
+        //       console.log(response.data)
+        //       this.setState({
+        //           communities:response.data
+                  
+        //       })
+              
+        //       }
+        //       )
+        // }
 
         render(){
+
+          const{communities}=this.state
             return (
 
            <div>
@@ -76,9 +129,20 @@ class SubCommunity extends Component{
         </div>
 
         <div class="row">
-        {subCommunity.map( community=> {return (
-         
-          <div class="col-lg-4 col-md-6 service-item">
+
+{console.log(communities1)}
+          {communities1.length?(communities1.map( community=>{
+            community.subCom.map(sub=>{return (<h1>{sub}</h1>)
+              
+            }
+           
+            )
+          }
+          )):null}
+        
+        {communities1.length?(communities1.map( community=> { 
+      console.log(community.name)
+          return ( <div class="col-lg-4 col-md-6 service-item">
             <div class="service-icon"><i class="fa fa-desktop"></i></div>
             <h4 class="service-title"><a href="">{community.name}</a></h4>
             <p class="service-description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident</p>
@@ -86,7 +150,7 @@ class SubCommunity extends Component{
           </div>
         
           
-        )})}
+        )})):null}
 
 </div>
        

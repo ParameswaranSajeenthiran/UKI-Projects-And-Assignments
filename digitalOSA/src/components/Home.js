@@ -11,6 +11,9 @@ import CreateSubCommunity from "./CreateSubCommunity";
 import { Route, Router, Switch } from "react-router";
 import SearchCommunity from "./SearchCommunity";
 import axios from 'axios'
+import CancelIcon from '@material-ui/icons/Cancel';
+import { Chat } from "@material-ui/icons";
+import ChatApp from "./Chat";
 const style = {
   root: {
     minWidth: 275,
@@ -56,17 +59,61 @@ const subCommunity=[
 id:5
 }
 ]
+
+const communities1=[
+  {
+  name:"D.S.senanayake college",
+  subCom:[
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  }
+  ]
+},
+{
+  name:"D.S.senanayake college",
+  subCom:[
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  },
+  {
+    name:"Art club"
+  }
+  ]
+}
+
+
+]
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       content: "",
-      communities:""
+      communities:"",
+      search:""
     };
   }
   
   componentDidMount(){
-    axios.get('http://localhost:8080/departments')
+    axios.get('http://localhost:8080/com',{
+    headers: {
+        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+    }
+})
         .then(response=>{
         console.log(response.data)
         this.setState({
@@ -77,7 +124,39 @@ export default class Home extends Component {
         }
         )
   }
-  
+  handleSearch=(ele)=>{
+this.setState({
+  search:ele.target.value
+
+})
+if(this.state.search==""){
+
+  axios.get('http://localhost:8080/com',{
+    headers: {
+        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+    }
+})
+        .then(response=>{
+        console.log(response.data)
+        this.setState({
+            communities:response.data
+            
+        })
+        
+        }
+        )
+
+console.log(this.state.search)
+
+}else{
+//console.log(data.filter((item)=>item.title.toLowerCase().indexOf(this.state.search)>-1))
+const  searched=this.state.communities.filter((item)=>item.name.toLowerCase().includes(this.state.search))
+console.log(searched)
+this.setState({
+  communities:searched
+})
+}
+}
   render() {
  
     const{communities}=this.state
@@ -90,13 +169,28 @@ export default class Home extends Component {
         <Switch>
 <Route exact path="/createSubCommunity" component={CreateSubCommunity} /> */}
  <div>
- <SearchCommunity/>
- <div><h1>
- {
-                communities.length? communities.map(movie=><div onClick={this.handleClick}id={movie.original_title}>{movie.name}</div> ):null
-            }
-</h1>
- </div>
+
+ 
+   <div>
+
+
+    <section id="subscribe">
+      <div class="container  fadeInUp">
+        <div class="row">
+          <div class="col-md-8">
+            <h3 class="subscribe-title">search for communities</h3>
+            <p class="subscribe-text">Join our 1000+ subscribers and get access to the latest tools, freebies, product announcements and much more!</p>
+          </div>
+        
+          <div class="col-md-4 subscribe-btn-container">
+          
+            <a class="subscribe-btn" href="#services">search</a>
+          </div>
+        </div>
+      </div>
+    </section>
+               </div>
+
  
 <section id="services">
       <div class="container wow fadeInUp">
@@ -104,7 +198,8 @@ export default class Home extends Component {
           <div class="col-md-12">
             <h3 class="section-title">Explore Communities</h3>
             <div class="section-title-divider"></div>
-            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium</p>
+           
+            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField onChange={this.handleSearch} label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
           </div>
         </div>
 
@@ -197,6 +292,7 @@ export default class Home extends Component {
         </div>
       </div>
     </section>
+    <ChatApp/>
      </div>
 
  

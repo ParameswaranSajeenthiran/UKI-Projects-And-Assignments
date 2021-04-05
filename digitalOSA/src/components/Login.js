@@ -4,7 +4,7 @@ import Input from "react-validation/build/input";
 
 import { Card, CardContent, Typography, CardActionArea, Grid, FormControl, CircularProgress } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
-
+import SignInSide from "./SignIn";
 import AuthService from "../services/auth.service";
 
 const style = {
@@ -72,7 +72,11 @@ export default class Login extends Component {
 
   render() {
     return (
+    
+  
       <Grid container spacing={3}>
+      
+              <SignInSide/>
         <Grid item xs={3}/>
         <Grid item xs={6}>
           <Card style={style.root}>

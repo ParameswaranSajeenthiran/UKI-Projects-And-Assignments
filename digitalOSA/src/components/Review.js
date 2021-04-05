@@ -1,11 +1,12 @@
-import React from 'react';
+
+import React, { Component } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Grid from '@material-ui/core/Grid';
-
+import axios from 'axios'
 const products = [
   { name: 'Commuinity name', desc: 'school', price: 'D.s.senanayake college' }];
 const addresses = ['1 Material-UI Drive', 'Reactville', 'Anytown', '99999', 'USA'];
@@ -14,21 +15,55 @@ const payments = [
   
 ];
 
-const useStyles = makeStyles((theme) => ({
+const classes={
   listItem: {
-    padding: theme.spacing(1, 0),
-  },
+    padding:"20px"},
   total: {
     fontWeight: 700,
   },
   title: {
-    marginTop: theme.spacing(2),
-  },
-}));
+    marginTop: "10px",
+  }
+}
 
-export default function Review() {
-  const classes = useStyles();
+export default class Review extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+     
+      name:localStorage.getItem("name"),
+      numMembers:localStorage.getItem("numMem"),
+       motto:localStorage.getItem("motto"),
+      bankAcc:localStorage.getItem("bankAcc"),
+           subCom:[
+    {id:localStorage.getItem("id"),
+     name:localStorage.getItem("name"),
+     numMem:localStorage.getItem("numMem"),
+     bankAcc:localStorage.getItem("bankAcc"),
+     motto:localStorage.getItem("motto")
+     
+     }]
+    }
+  }
 
+  handleSubmit=()=>{
+  console.log(this.state)
+    axios.post("http://localhost:8080/com",this.state,{  headers: {
+        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+    }})
+
+
+    localStorage.removeItem("name")
+    localStorage.removeItem("numMem")
+    localStorage.removeItem("motto")
+    localStorage.removeItem("bankAcc")
+    localStorage.removeItem("id")
+    
+
+  }
+render(){
+
+  // const classes = useStyles();
   return (
     <React.Fragment>
       <Typography variant="h6" gutterBottom>
@@ -44,7 +79,7 @@ export default function Review() {
         <ListItem className={classes.listItem}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" className={classes.total}>
-            
+            {/* {JSON.stringify(this.state)} */}
           </Typography>
         </ListItem>
       </List>
@@ -71,9 +106,10 @@ export default function Review() {
                 </Grid>
               </React.Fragment>
             ))}
-          </Grid>
+          </Grid><button onClick={this.handleSubmit}>submit button</button>
         </Grid>
       </Grid>
     </React.Fragment>
   );
+            }
 }

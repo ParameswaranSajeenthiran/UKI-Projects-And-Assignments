@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
+import "./Chat.css";
 import MenuIcon from '@material-ui/icons/Menu';
 import { Paper, Typography, AppBar, Toolbar, Button, IconButton, TextField } from "@material-ui/core";
 import Login from "./components/Login";
@@ -28,6 +29,7 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 import Hero from "./components/Hero";
 import SearchCommunity from "./components/SearchCommunity";
+import ChatApp from "./components/Chat";
 // import "./assets/img/favicon.png" 
 // import "./assets/img/apple-touch-icon.png"
 const style = {
@@ -132,8 +134,11 @@ changeSubCommunity=()=>{
                  <Button href="/home" color='inherit'>
                    <strong>Home</strong>
                  </Button>
-                <Button href="/blog" color='inherit'>
+                 <Button href="/blog" color='inherit'>
                      <strong>blog</strong>
+                   </Button>
+                   <Button href="/chat" color='inherit'>
+                     <strong>chat</strong>
                    </Button>
                    <Button href="/about" color='inherit'>
                      <strong>about us</strong>
@@ -257,6 +262,7 @@ changeSubCommunity=()=>{
               <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={BoardAdmin} />
+              <Route path="/chat" component={ChatApp} />
              </Switch>
 
  
