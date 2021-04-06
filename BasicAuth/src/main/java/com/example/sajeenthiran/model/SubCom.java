@@ -3,14 +3,14 @@ package com.example.sajeenthiran.model;
 import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "SubCommunities")
 public class SubCom {
-private long id;
+private String id;
 private String name;
 private String numMem;
 private String bankAcc;
 private String motto;
 
 
-public SubCom(long id, String name, String numMem, String bankAcc, String motto) {
+public SubCom(String id, String name, String numMem, String bankAcc, String motto) {
 	super();
 	this.id = id;
 	this.name = name;
@@ -18,10 +18,10 @@ public SubCom(long id, String name, String numMem, String bankAcc, String motto)
 	this.bankAcc = bankAcc;
 	this.motto = motto;
 }
-public long getId() {
+public String getId() {
 	return id;
 }
-public void setId(long id) {
+public void setId(String id) {
 	this.id = id;
 }
 public String getName() {

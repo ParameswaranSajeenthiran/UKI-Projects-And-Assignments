@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="MainCommunities")
 public class MainCommunity {
 @Id
-private long id;
+private String id;
 
 @NotBlank
 @Size(max = 20)
@@ -39,18 +39,21 @@ private List<SubCom>subCom;
 
 
 
-public MainCommunity(long id, String name, String numMembers, String motto, String bankAcc) {
+
+public MainCommunity(String id, @NotBlank @Size(max = 20) String name, @NotBlank @Size(max = 50) String numMembers,
+		@NotBlank @Size(max = 50) String motto, @NotBlank @Size(max = 50) String bankAcc, List<SubCom> subCom) {
 	super();
 	this.id = id;
 	this.name = name;
 	this.numMembers = numMembers;
 	this.motto = motto;
 	this.bankAcc = bankAcc;
+	this.subCom = subCom;
 }
-public long getId() {
+public String getId() {
 	return id;
 }
-public void setId(long id) {
+public void setId(String id) {
 	this.id = id;
 }
 public String getName() {

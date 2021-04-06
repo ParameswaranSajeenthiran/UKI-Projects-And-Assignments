@@ -34,21 +34,15 @@ CustomRepository customRepository;
 				return ResponseEntity.badRequest()
 						.body(new MessageResponse("Error: Username is already taken!"));
 			}
-			else{	//System.out.println(mainCom);
-				long id=customRepository.getMaxEmpId()+1;
-			//System.out.println(mainCom);
+			else{	
+		
 			
-			
-			MainCommunity newMainCom=new MainCommunity(id,mainCom.getName(),mainCom.getNumMembers(),
-					mainCom.getMotto(),mainCom.getBankAcc());
-			newMainCom.setSubCom(mainCom.getSubCom());
-			mainComRepository.save(newMainCom);
-			
-
 		List<SubCom> subCom=new ArrayList<>();
 		subCom.addAll(mainCom.getSubCom());
-		subComRepostiory.saveAll(subCom);
-			return  new ResponseEntity<>(newMainCom, HttpStatus.CREATED);
+		List<SubCom> newSubCom= subComRepostiory.saveAll(subCom);
+		mainCom.setSubCom(newSubCom);
+		mainComRepository.save(mainCom);
+			return  new ResponseEntity<>(mainCom, HttpStatus.CREATED);
 					}
 			
 		}catch (Exception e) {
