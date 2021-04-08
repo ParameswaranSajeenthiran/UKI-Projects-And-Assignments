@@ -13,9 +13,6 @@ this.state={
   id:localStorage.getItem("id"),
   name:localStorage.getItem("name"),
   description:localStorage.getItem("description"),
-
- 
-
  empId:"",
  name:"",
  age:"",

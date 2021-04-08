@@ -125,8 +125,13 @@ handleRegister = (e) => {
   render() {
     localStorage.setItem('roles',"ROLE_ADMIN")
     return (
+<div>
+
+      <div>
+         <SignInSide/>
+      </div>
       <Grid container>
-      <SignInSide/>
+     
         <Grid item xs={4}/>
         
         <Grid item xs={3}>
@@ -182,6 +187,7 @@ handleRegister = (e) => {
         </Grid>
         <Grid item xs={4}/>
       </Grid>
+      </div>
     );
   }
 }

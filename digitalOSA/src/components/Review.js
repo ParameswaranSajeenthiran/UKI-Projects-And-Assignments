@@ -31,16 +31,30 @@ export default class Review extends Component {
     super(props);
     this.state={
      
-      name:localStorage.getItem("name"),
-      numMembers:localStorage.getItem("numMem"),
+     /* name:localStorage.getItem("name"),
+      numMembers:localStorage.numMem,
        motto:localStorage.getItem("motto"),
       bankAcc:localStorage.getItem("bankAcc"),
            subCom:[
     {id:localStorage.getItem("id"),
      name:localStorage.getItem("name"),
-     numMem:localStorage.getItem("numMem"),
+     numMem:localStorage.numMem,
      bankAcc:localStorage.getItem("bankAcc"),
      motto:localStorage.getItem("motto")
+     
+     }]*/
+     
+     
+      name:"ROYAL",
+      numMembers:"tewrnty",
+       motto:"liuve giver grow",
+      bankAcc:"ewerw",
+           subCom:[
+    {id:"hhhh",
+     name:"ROYAL",
+     numMem:"ROYAL",
+     bankAcc:"ROYAL",
+     motto:"ROYAL"
      
      }]
     }

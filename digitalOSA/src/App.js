@@ -12,7 +12,7 @@ import AuthService from "./services/auth.service";
 import { AccountCircle } from "@material-ui/icons";
 import About from "./components/About";
 import Blog from "./components/Blog";
-import CreateSubCommunity from "./components/CreateSubCommunity";
+import CreateSubCom from "./components/CreateSubCom";
 import "./assets/css/style.css"
 import "./assets/vendor/bootstrap/css/bootstrap.min.css" 
 import "./assets/vendor/icofont/icofont.min.css" 
@@ -30,6 +30,13 @@ import BoardAdmin from "./components/BoardAdmin";
 import Hero from "./components/Hero";
 import SearchCommunity from "./components/SearchCommunity";
 import ChatApp from "./components/Chat";
+import CreateMainCom from "./components/CreateMainCom";
+import SubComList from "./components/SubComList";
+import MainComList from "./components/MainComList";
+import MainComCreating from "./components/MainComCreating";
+import Dashboard from "./components/Dashboard";
+
+
 // import "./assets/img/favicon.png" 
 // import "./assets/img/apple-touch-icon.png"
 const style = {
@@ -251,18 +258,24 @@ changeSubCommunity=()=>{
   
                <Route exact path={["/", "/home"]} component={Home} />
                <Route exact path="/login" component={Login} />
-               <Route exact path="/createCommunity" component={CreateSubCommunity} />
+               <Route exact path="/createCommunity" component={CreateMainCom} />
                <Route exact path="/register" component={Register} />
                <Route exact path="/profile" component={Profile} />
                <Route exact path="/about" component={About} />
                <Route exact path="/blog" component={Blog} />
-               <Route exact path="/createSubCommunity" component={CreateSubCommunity} /> 
+               <Route exact path="/createSubCom" component={CreateSubCom} /> 
                <Route exact path="/community" component={SubCommunity} />
                <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
               <Route path="/mod" component={BoardModerator} />
               <Route path="/admin" component={BoardAdmin} />
-              <Route path="/chat" component={ChatApp} />
+              <Route path="/chat" component={ChatApp}/>
+              <Route exact path="/mainComCreating" component={MainComCreating} />
+              <Route path="/mainComList" component={MainComList} />
+              <Route path="/subCom" component={Dashboard} />  
+            
+              
+              
              </Switch>
 
  

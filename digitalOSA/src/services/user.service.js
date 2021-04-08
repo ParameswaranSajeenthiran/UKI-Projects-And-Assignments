@@ -29,6 +29,17 @@ class AuthService {
       password
     });
   }
+  createMain(name,motto,numMembrs,bankAcc){
+  return axios.post("http://localhost:8080/com",{
+  name,
+  motto,
+  numMembers,
+  bankAcc
+  },{  headers: {
+          'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+      }})
+      
+  }
 
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('user'));;

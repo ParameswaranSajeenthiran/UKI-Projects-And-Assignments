@@ -71,11 +71,11 @@ const steps = ['Personel adress', 'Community details', 'Summary  '];
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return <AddressForm />;
+      return<AddressForm/>
     case 1:
-      return <PaymentForm />;
+      return <PaymentForm/>
     case 2:
-      return <Review />;
+return <Review/>
     default:
       throw new Error('Unknown step');
   }
@@ -85,6 +85,8 @@ export default function Checkout() {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
 const [name,SetName]=React.useState("");
+
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
 
@@ -95,6 +97,9 @@ const [name,SetName]=React.useState("");
     setActiveStep(activeStep - 1);
 
   };
+
+
+
 
   return (
     <React.Fragment>

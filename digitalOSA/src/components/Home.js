@@ -14,6 +14,7 @@ import axios from 'axios'
 import CancelIcon from '@material-ui/icons/Cancel';
 import { Chat } from "@material-ui/icons";
 import ChatApp from "./Chat";
+import MainComList from "./MainComList";
 const style = {
   root: {
     minWidth: 275,
@@ -108,22 +109,22 @@ export default class Home extends Component {
     };
   }
   
-  componentDidMount(){
-    axios.get('http://localhost:8080/com',{
-    headers: {
-        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-    }
-})
-        .then(response=>{
-        console.log(response.data)
-        this.setState({
-            communities:response.data
+//   componentDidMount(){
+//     axios.get('http://localhost:8080/com',{
+//     headers: {
+//         'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+//     }
+// })
+//         .then(response=>{
+//         console.log(response.data)
+//         this.setState({
+//             communities:response.data
             
-        })
+//         })
         
-        }
-        )
-  }
+//         }
+//         )
+//   }
   handleSearch=(ele)=>{
 this.setState({
   search:ele.target.value
@@ -204,6 +205,9 @@ this.setState({
         </div>
 
         <div class="row">
+
+<MainComList/>
+
         {communities.length? communities.map( community=> {return (
          
           <div class="col-lg-4 col-md-6 service-item">
@@ -292,7 +296,7 @@ this.setState({
         </div>
       </div>
     </section>
-    <ChatApp/>
+
      </div>
 
  
