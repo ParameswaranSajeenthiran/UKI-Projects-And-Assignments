@@ -162,34 +162,17 @@ prevPage=()=>{
 }
 
   handleSubmit1=()=>{
-    console.log({"name":this.state.subName,
-"numMembers":this.state.subNumMem,
-"motto":this.state.subMotto,
-"bankAcc":this.state.subBankAcc,
- "subCom":[{id:this.state.subId,
-"name":this.state.subName,
-  "motto":this.state.subMotto,
-  "bankAcc":this.state.subBankAcc,
-  "numMem":this.state.subNumMem
-  }]
-  })
-
-
+   
       axios.post("http://localhost:8080/com",{
-       "name":this.state.subName,
-"numMembers":this.state.subNumMem,
-"motto":this.state.subMotto,
-"bankAcc":this.state.subBankAcc,
- "subCom":[{id:this.state.subId,
-"name":this.state.subName,
-  "motto":this.state.subMotto,
-  "bankAcc":this.state.subBankAcc,
-  "numMem":this.state.subNumMem
-     
- }]
+       "name":this.state.name,
+"numMembers":this.state.numMem,
+"motto":this.state.motto,
+"bankAcc":this.state.bankAcc,
+"subCom":[]
+ 
      },{  headers: {
           'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-      }})
+      }}).then((res)=>{console.log(res)})
             localStorage.setItem("MainName",this.state.name)
       localStorage.setItem("MainName",this.state.name)
                     localStorage.setItem("MainMotto",this.state.motto)
@@ -440,8 +423,8 @@ render(){
               variant="contained"
               color="primary"
               className={classes.submit}
-              href="/mainCom"
-              onClick={this.handleClick}>
+              
+              onClick={this.handleSubmit1}>
                        Create Main Community
             </Button>
             <Grid container>

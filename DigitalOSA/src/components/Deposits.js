@@ -17,10 +17,10 @@ const useStyles = makeStyles({
 
 export default function Deposits() {
   const classes = useStyles();
-  const [id,setId]=React.useState(localStorage.getItem("id"));
+  const [id,setId]=React.useState(localStorage.getItem("subId"));
   const [subCom,setSubCom]=React.useState(0);
   React.useEffect(()=>{
-          axios.get(`http://localhost:8080/com/SubCom/${id}`,{
+          axios.get(`http://localhost:8080/com/activities/${id}`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
@@ -30,7 +30,7 @@ export default function Deposits() {
                  setSubCom(response.data.length)
           
                 })
-        },[])
+        },)
   return (
     <React.Fragment>
       <Title>Recent Participants</Title>

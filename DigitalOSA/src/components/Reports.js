@@ -60,7 +60,7 @@ const featuredPosts = [
     imageText: 'Image Text',
   },
   {
-    title: 'Presentations',
+    title: 'slide',
     date: '',
     description:
       'Add or view presentations related to projects.',
@@ -68,7 +68,7 @@ const featuredPosts = [
     imageText: 'Image Text',
   },
   {
-    title: 'excel',
+    title: 'spreadSheet',
     date: '',
     description:
       'Add or view records related to projects.',

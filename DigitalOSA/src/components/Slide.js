@@ -16,7 +16,7 @@ import Link from '@material-ui/core/Link';
 import SubComList from './SubComList';
 import Dashboard from './Dashboard';
 import axios from 'axios'
-import { TextField,FormControl } from "@material-ui/core";
+import { TextField } from '@material-ui/core';
 
 // import Dashboard from "./Dashboard";
 // import Alert from '@material-ui/lab/Alert';
@@ -85,20 +85,17 @@ const cards = [
 
 
 
-export default function MainComList() {
+export default function Slide() {
   const classes = useStyles();
-  const user1=JSON.parse(localStorage.getItem("user"))
-  if(user1!=null){ const username1=user1.username}
- 
+
 const [subCom,setSubCom]=useState([]);
-const [joinedSubCom,setJoinedSubCom]=useState([]);
-const [id,setId]=useState(222);
-
+const [id,setId]=useState(localStorage.getItem("subId"));
+const [type,setType]=useState(localStorage.getItem("report"));
 const [mainCom,setMainCom]=useState([]);
-
-
+const [title,setTitle]=useState("");
+const [link,setLink]=useState("");
  useEffect(()=>{
-          axios.get("http://localhost:8080/com",{
+          axios.get(`http://localhost:8080/com/report/slide/${id}`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
@@ -108,23 +105,10 @@ const [mainCom,setMainCom]=useState([]);
                  setMainCom(response.data)
           
                 })
-        },[])
- 
-        
+        },)
 
- useEffect(()=>{
-          axios.get("http://localhost:8080/com/606c83cae31c030df10e4cc5",{
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-            }
-        })
-                .then(response=>{
-                 console.log(response.data)
-                 setSubCom(response.data)
-          
-                })
-        },[])
-      
+
+
        
 const handleClick=(ele)=>{
 localStorage.removeItem("id")
@@ -132,27 +116,31 @@ localStorage.setItem("id",ele)
 console.log(ele)
 }
 
+const docTitle=(e)=>{
+setTitle(e.target.value)
+}
 
- useEffect(()=>{
-         localStorage.removeItem("MainId")
-          localStorage.removeItem("MainName")
-             localStorage.removeItem("MainMotto")
-                localStorage.removeItem("MainNumMembers")
-                 
-        },[])
-           useEffect(()=>{
-          axios.get(`http://localhost:8080/com/userMainCom/sajeenthiran`,{
+const docLink=(e)=>{
+setLink(e.target.value)
+}
+const submit=()=>{
+  axios.post(`http://localhost:8080/com/report/${id}`,{
+	"title":title,
+	"source":link,
+	"type":"slide"
+},{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         })
-                .then(response=>{
+         .then(response=>{
                  console.log(response.data)
-                 setJoinedSubCom(response.data)
+                
           
                 })
-        },[])
-
+                
+    
+}
   return (
     <React.Fragment>
       <CssBaseline />
@@ -166,63 +154,35 @@ console.log(ele)
       </AppBar>
       <main>
         {/* Hero unit */}
-    
+        <div className={classes.heroContent}>
+          <Container maxWidth="sm">
+          <TextField     fullWidth  label="project Name" variant="filled" onChange={docTitle}></TextField>{title}
+          <TextField     fullWidth  label="Document Link" variant="filled" onChange={docLink}></TextField>{link}{id}
+                   
+             
+              
+  
+            <div className={classes.heroButtons}>
+              <Grid container spacing={2} justify="center">
+                <Grid item>
+                  <Button onClick={submit} variant="contained"  color="primary">
+                    Add Document
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <a  href="/Form">
+                 
+                  </a>
+                </Grid>
+              </Grid>
+            </div>
+          </Container>
+        </div>
         <div id="joinSubcommunity">
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
-           <Grid container spacing={4}>
-            {joinedSubCom.map((card) => (
-              <Grid item key={card.key} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
-                    title="Image title"
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
-                    </Typography>
-                    <Typography>
-                    {/* {card.Des} */}
-                      This is a media card. You can use this section to describe the content.
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    
-                    <Button href="/mainCom"onClick={()=>{localStorage.setItem("MainId",card.id)
-                    localStorage.setItem("MainName",card.name)
-                    localStorage.setItem("MainMotto",card.motto)
-                    localStorage.setItem("MainNumMembers",card.numMembers) }} size="small" color="primary">
-                      Join
-                      {/* <Alert variant="filled" severity="success">
-                            Join successfully
-                        </Alert> */}
-                    </Button>
-               
-                    <Button size="small" color="primary">
-                     View
-                    </Button>
-                    
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-            <br/>  <br/>  <br/>  <br/>  <br/>
-          </Grid>
-          
-            </Container>
-            <Container className={classes.cardGrid} maxWidth="md">
-          <div class="row">
-          <div class="col-md-12">
-            <h3 class="section-title">Explore Communities</h3>
-            <div class="section-title-divider"></div>
-           
-            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> </p>
-          </div>
-        </div>
           <Grid container spacing={4}>
-            {mainCom.map((card) => (
+            {mainCom.length?(mainCom.map((card) => (
               <Grid item key={card.key} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -232,7 +192,7 @@ console.log(ele)
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {card.name}
+                      {card.title}
                     </Typography>
                     <Typography>
                     {/* {card.Des} */}
@@ -241,28 +201,19 @@ console.log(ele)
                   </CardContent>
                   <CardActions>
                     
-                    <Button href="/mainCom"onClick={()=>{localStorage.setItem("MainId",card.id)
-                    localStorage.setItem("MainName",card.name)
-                    localStorage.setItem("MainMotto",card.motto)
-                    localStorage.setItem("MainNumMembers",card.numMembers) }} size="small" color="primary">
-                      Join
-                      {/* <Alert variant="filled" severity="success">
-                            Join successfully
-                        </Alert> */}
-                    </Button>
-               
-                    <Button size="small" color="primary">
+                               
+                    <Button href={card.source} target="_blank"  size="small" color="primary">
                      View
                     </Button>
                     
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))):null}
           </Grid>
         </Container>
         </div>
- 
+        
       </main>
       {/* Footer */}
       <footer className={classes.footer}>

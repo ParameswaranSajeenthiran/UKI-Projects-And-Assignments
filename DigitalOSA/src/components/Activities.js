@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState ,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {Grid,TextField,Button} from '@material-ui/core';
@@ -11,6 +12,7 @@ import MainFeaturedPost from './MainFeaturedPost';
 import FeaturedPost from './FeaturedPost';
 // import Main from './Main';
 import Sidebar from './Sidebar';
+import axios from 'axios'
 import Footer from './Footer';
 import post1 from './blog-post.1.md';
 import post2 from './blog-post.2.md';
@@ -126,35 +128,139 @@ const sidebar = {
 //     </form>
 //   );
 // }
-
-
-
-
+const styles={
+image:{width:"300px",
+height:"150px"}}
 
 
 export default function Activities() {
+const [image,setImage]=React.useState([]);
+const [subCom,setSubCom]=useState(localStorage.getItem("subId"));
+const [mainCom,setMainCom]=useState(localStorage.getItem("MainId"));
+const [title,setTitle]=useState("");
+const [description,setDescription]=useState("");
+const [events,setEvents]=React.useState([]);
+ const onFileChangeHandler = (e) => {
+    e.preventDefault();
+    var elements=[];
+    console.log(e.target.files.length)
+    let files = e.target.files
+    console.log(files)
+    for(let i = 0; i<e.target.files.length; i++){
+    let reader = new FileReader()
+    reader.readAsDataURL(files[i])
+    reader.onload = (e) => {
+      console.log(" Imagedata",e.target.result)
+      elements.push(e.target.result)
+    setImage(elements)
+    }
+   console.log(elements)
+  }}
+const [selectedImage,setSelectedImage]=React.useState([]);
+const handleImage =(e)=>{
+console.log(e.target.files)
+
+if(e.target.files){
+
+const filesArray=Array.from(e.target.files).map((file)=>URL.createObjectURL(file))
+console.log(e.target.files)
+
+setSelectedImage((prevImages)=>prevImages.concat(prevImages))
+Array.from(e.target.files).map((file)=>URL.revokeObjectURL(file))
+
+
+}}
+
+ const onChange = e => {
+    const files = Array.from(e.target.files)
+    console.log(e.target.files)
+
+    const formData = new FormData()
+
+    files.forEach((file, i) => {
+      formData.append(i, file)
+    })
+    console.log(formData)
+}
+const renderPhotos=(source)=>{
+return source.map((photo)=>{
+return<img  src={photo}key={photo}/>})}
+const renderImages=(image)=>{
+return image.map((img)=>{
+return<img  src={img}key={img}/>})}
   const classes = useStyles();
 
+const submit=()=>{
+  axios.post("http://localhost:8080/com/events",{
+	"title":title,
+	"description":description,
+	"subCom":subCom,
+	"mainCom":mainCom,
+	image:image
+},{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+         .then(response=>{
+                 console.log(response.data)
+                
+          
+                })
+                
+    
+}
+ useEffect(()=>{
+          axios.get(`http://localhost:8080/com/events${subCom}`,{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+                .then(response=>{
+                 console.log(response.data)
+                 setEvents(response.data)
+          
+                })
+        },[])
+ 
+
+
+const changeTitle=(e)=>{
+setTitle(e.target.value)
+}
+
+const changeDescription=(e)=>{
+setDescription(e.target.value)
+}
   return (
     <React.Fragment>
       <CssBaseline />
       <Container maxWidth="lg">
         {/* <Header title="Blog" sections={sections} />   */}
-      
+      {image.length?image.map((image)=>(<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg">
+    <img src={image} alt="Cinque Terre" width="600" height="400"/>
+  </a>
+  <div class="desc">Add a description of the image here</div>
+</div>)):null}
+      {image[4]}
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
           
           <Grid container spacing={4}>
-          <TextField     fullWidth  label="Event Name " variant="filled"></TextField>
-          <TextField     fullWidth  label="Event Description" variant="filled"></TextField>
-
+          <TextField  onChange={changeTitle}   fullWidth  label="Event Name " variant="filled"></TextField>
+          <TextField onChange={changeDescription}      fullWidth  label="Event Description" variant="filled"></TextField>
+<input type="file" multiple onChange={onFileChangeHandler }/>
+<div> {image.length?image.map((image)=><img style={styles.image} src={image}/>):null}
+{renderPhotos(selectedImage)}
+</div>
           <Button href="#joinSubcommunity" variant="contained"  color="primary">
                     upload iamges
-                  </Button>
+                  </Button><Button onClick={submit}>submit</Button>
                   <Button href="#joinSubcommunity" variant="contained"  color="primary">
                     Add Event
                   </Button>
-            {featuredPosts.map((post) => (
+            {events.map((post) => (
               <ActivityPost key={post.title} post={post} />
             ))}
           </Grid>
@@ -218,6 +324,12 @@ Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at
           </Grid>
         </main>
       </Container>
+       {image.length?image.map((image)=>(<div class="gallery">
+  <a target="_blank" href="img_5terre.jpg">
+    <img src={image} alt="Cinque Terre" width="600" height="400"/>
+  </a>
+  <div class="desc">Add a description of the image here</div>
+</div>)):null}
       {/* <Footer title="Footer" description="Something here to give the footer a purpose!" /> */}
     </React.Fragment>
   );

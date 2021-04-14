@@ -1,9 +1,13 @@
 package com.example.sajeenthiran.model;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "SubCommunities")
 public class SubCom {
+	
+@Id
 private String id;
+	
 private String name;
 private String numMem;
 private String bankAcc;

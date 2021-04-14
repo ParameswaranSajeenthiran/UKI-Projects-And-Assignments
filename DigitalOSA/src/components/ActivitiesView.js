@@ -80,32 +80,28 @@ const cards = [
 
 export default function ActivitiesView() {
 
-const [subCom,setSubCom]=useState([]);
-const [id,setId]=useState(localStorage.getItem("MainId"));
+
+const [subCom,setSubCom]=useState(localStorage.getItem("subId"));
+const [mainCom,setMainCom]=useState(localStorage.getItem("MainId"));
 const [name,setName]=useState(localStorage.getItem("MainName"));
 const [motto,setMotto]=useState(localStorage.getItem("MainId"));
 const [numMembers,setNumMembers]=useState(localStorage.getItem("MainNumMembers"));
 
+
  useEffect(()=>{
-          axios.get(`http://localhost:8080/com/${id}`,{
+          axios.get(`http://localhost:8080/com/events${subCom}`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         })
                 .then(response=>{
                  console.log(response.data)
-                 setSubCom(response.data)
+                 setMainCom(response.data)
           
                 })
         },[])
+ 
 
-useEffect(()=>{
-         localStorage.removeItem("subId")
-          localStorage.removeItem("subName")
-             localStorage.removeItem("subMotto")
-                localStorage.removeItem("subNumMembers")
-                 
-        },[])
 
 
 

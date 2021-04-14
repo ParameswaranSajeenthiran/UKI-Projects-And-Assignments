@@ -1,6 +1,6 @@
 import React, { useState ,useEffect} from 'react';
 import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
+
 import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,6 +17,8 @@ import axios from 'axios'
 import Dashboard from './Dashboard';
 import MainFeaturedPost from './MainFeaturedPost';
 import Popover from '@material-ui/core/Popover';
+import { TextField,Button,FormControl } from "@material-ui/core";
+import CancelIcon from '@material-ui/icons/Cancel';
 // import Dashboard from "./Dashboard";
 // import Alert from '@material-ui/lab/Alert';
 
@@ -85,8 +87,12 @@ const cards = [
 
 export default function SubComList() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const username="";
+  const user1=JSON.parse(localStorage.getItem("user"))
+  if(user1!=null){ username=user1.username}
 const [joined,setJoined]=useState(true);
 const [subCom,setSubCom]=useState([]);
+const [joinedSubCom,setJoinedSubCom]=useState([]);
 const [id,setId]=useState(localStorage.getItem("MainId"));
 const [name,setName]=useState(localStorage.getItem("MainName"));
 const [motto,setMotto]=useState(localStorage.getItem("MainId"));
@@ -104,6 +110,23 @@ const [numMembers,setNumMembers]=useState(localStorage.getItem("MainNumMembers")
           
                 })
         },[])
+        
+         
+ useEffect(()=>{
+          axios.get(`http://localhost:8080/com/userSubCom?user=sajeendran&mainCom=${id}`,{
+    
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuUDpzYWplZTEyMw=='
+            }
+        })
+                .then(response=>{
+                 console.log(response.data)
+                 setJoinedSubCom(response.data)
+          
+                })
+        },[])
+        
+        
 
 useEffect(()=>{
          localStorage.removeItem("subId")
@@ -130,22 +153,7 @@ const mainFeaturedPost = {
   
     const open = Boolean(anchorEl);
   const id1 = open ? 'simple-popover' : undefined;
-const handleJoin=(card)=>{
 
-axios.post("http://localhost:8080/com/joinSub",
-                   {subCom:card.id,
-                   memberJoined:"sajeenthiran",
-                   isMember:true },{
-                    
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-            }
-        })
-        localStorage.setItem("subId",card.id)
-                    localStorage.setItem("subName",card.name)
-                    localStorage.setItem("subMotto",card.motto)
-                    localStorage.setItem("subNumMembers",card.numMem)
-}
   const classes = useStyles();
 
   return (
@@ -185,6 +193,85 @@ axios.post("http://localhost:8080/com/joinSub",
        
    
         <div id="joinSubcommunity">
+           <div class="row">
+          <div class="col-md-12">
+            <h3 class="section-title">Communities You joined</h3>
+            <div class="section-title-divider"></div>
+           
+            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
+          </div>
+        </div>
+         <Container className={classes.cardGrid} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            {joinedSubCom.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <Card className={classes.card}>
+                  <CardMedia
+                    className={classes.cardMedia}
+                    image="https://source.unsplash.com/random"
+                    title="Image title"
+                  />
+                  <CardContent className={classes.cardContent}>
+                    <Typography gutterBottom variant="h5" component="h2">
+                       {card.name}
+                    </Typography>
+                    <Typography>
+                    {/* {card.Des} */}
+                      This is a media card. You can use this section to describe the content.
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+            
+                   <Button aria-describedby={id1} variant="contained" color="primary" >
+        join
+      </Button>
+      <Popover
+        id1={id1}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Typography className={classes.typography}>joined succefully</Typography>
+      </Popover>
+                   
+                   <Button onClick={()=>{if(user1!=null){axios.post("http://localhost:8080/com/joinSub",
+                   {"subCom":card.id,
+                   "memberJoined":username,
+                   "isMember":true },{
+                    
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        }).then((res)=>{console.log(res)}) }} } size="small" color="primary">    Join
+                      {/* <Alert variant="filled" severity="success">
+                            Join successfully
+                        </Alert> */}
+                    </Button>
+                   
+                   <Button  href="/subCom"onClick={()=>{localStorage.setItem("subId",card.id)
+                    localStorage.setItem("subName",card.name)
+                    localStorage.setItem("subMotto",card.motto)
+                    localStorage.setItem("subNumMembers",card.numMembers)} }  size="small" color="primary">
+                     View
+                    </Button>
+                    
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+        
+        
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
@@ -207,7 +294,7 @@ axios.post("http://localhost:8080/com/joinSub",
                   </CardContent>
                   <CardActions>
             
-                   <Button aria-describedby={id1} variant="contained" color="primary" onClick={handleClick}>
+                   <Button aria-describedby={id1} variant="contained" color="primary" >
         join
       </Button>
       <Popover
@@ -227,15 +314,15 @@ axios.post("http://localhost:8080/com/joinSub",
         <Typography className={classes.typography}>joined succefully</Typography>
       </Popover>
                    
-                   <Button onClick={(card)=>{axios.post("http://localhost:8080/com/joinSub",
-                   {subCom:card.id,
-                   memberJoined:"sajeenthiran",
-                   isMember:true },{
+                   <Button onClick={()=>{axios.post("http://localhost:8080/com/joinSub",
+                   {"subCom":card.id,
+                   "memberJoined":username,
+                   "isMember":true },{
                     
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
-        }) }}  size="small" color="primary">    Join
+        }).then((res)=>{console.log(res)}) }}  size="small" color="primary">    Join
                       {/* <Alert variant="filled" severity="success">
                             Join successfully
                         </Alert> */}

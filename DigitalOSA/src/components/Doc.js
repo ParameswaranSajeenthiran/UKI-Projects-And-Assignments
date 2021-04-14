@@ -138,6 +138,7 @@ const submit=()=>{
                 
           
                 })
+                
     
 }
   return (
@@ -169,7 +170,7 @@ const submit=()=>{
                   </Button>
                 </Grid>
                 <Grid item>
-                  <a href="/Form">
+                  <a  href="/Form">
                  
                   </a>
                 </Grid>
@@ -201,7 +202,7 @@ const submit=()=>{
                   <CardActions>
                     
                                
-                    <Button href="https://docs.google.com/document/d/1nqAHZ8hREFpSXAGwDq1dizPNh-nqUkcJhfrNZm8qvEI/edit?usp=sharing"size="small" color="primary">
+                    <Button href="https://docs.google.com/document/d/1nqAHZ8hREFpSXAGwDq1dizPNh-nqUkcJhfrNZm8qvEI/edit?usp=sharing" target="_blank"  size="small" color="primary">
                      View
                     </Button>
                     

@@ -161,31 +161,13 @@ prevPage=()=>{
 }
 
   handleSubmit1=()=>{
-    console.log({"name":this.state.subName,
-"numMembers":this.state.subNumMem,
-"motto":this.state.subMotto,
-"bankAcc":this.state.subBankAcc,
- "subCom":[{id:this.state.subId,
-"name":this.state.subName,
-  "motto":this.state.subMotto,
-  "bankAcc":this.state.subBankAcc,
-  "numMem":this.state.subNumMem
-  }]
-  })
-
 
       axios.post("http://localhost:8080/com",{
        "name":this.state.subName,
 "numMembers":this.state.subNumMem,
 "motto":this.state.subMotto,
 "bankAcc":this.state.subBankAcc,
- "subCom":[{id:this.state.subId,
-"name":this.state.subName,
-  "motto":this.state.subMotto,
-  "bankAcc":this.state.subBankAcc,
-  "numMem":this.state.subNumMem
-     
- }]
+ "subCom":[]
      },{  headers: {
           'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
       }})
@@ -435,7 +417,7 @@ render(){
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={this.handleSubmit}
+              onClick={this.handleSubmit1}
             >
               Create  SubCommunity
             </Button>

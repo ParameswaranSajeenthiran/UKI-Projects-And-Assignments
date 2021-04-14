@@ -39,7 +39,9 @@ import Reports from "./components/Reports";
 import ReportsView from "./components/ReportView";
 import Activities from "./components/Activities";
 import Doc from "./components/Doc";
-
+import Slide from "./components/Slide";
+import axios from 'axios'
+import SpreadSheet from "./components/SpreadSheet";
 import ActivitiesView from "./components/ActivitiesView";
 
 // import "./assets/img/favicon.png" 
@@ -80,7 +82,8 @@ class App extends Component {
 
   componentDidMount() {
     const user = AuthService.getCurrentUser();
-
+  const user1=JSON.parse(localStorage.getItem("user"))
+  if(user1!=null){ const username1=user1.username}
     if (user) {
       this.setState({
         currentUser: AuthService.getCurrentUser(),
@@ -88,6 +91,8 @@ class App extends Component {
         showAdminBoard: user.roles.includes("ROLE_ADMIN")
       });
     }
+    
+    
   }
   logOut() {
     AuthService.logout();
@@ -280,6 +285,8 @@ changeSubCommunity=()=>{
               <Route path="/subCom" component={Dashboard} />  
               <Route path="/reports" component={Reports} /> 
               <Route path="/doc" component={Doc} /> 
+               <Route path="/spreadSheet" component={SpreadSheet} /> 
+		 <Route path="/slide" component={Slide} /> 
               <Route path="/activities" component={Activities} /> 
               <Route path="/activitiesView" component={ActivitiesView} /> 
              </Switch>

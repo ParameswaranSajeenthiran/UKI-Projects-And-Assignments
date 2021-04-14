@@ -8,6 +8,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Hidden from '@material-ui/core/Hidden';
+import MediumZoom from 'medium-zoom';
+
 
 const useStyles = makeStyles({
   card: {
@@ -20,14 +22,33 @@ const useStyles = makeStyles({
     width: 160,
   },
 });
+const styles={
+image:{width:"300px",
+height:"150px"}}
+
+
+
 
 export default function ActivityPost(props) {
+const [view,setView]=React.useState(false);
   const classes = useStyles();
+  const [image,setImage]=React.useState([]);
   const { post } = props;
+  
+  const handleView=()=>{
+if(view){
 
-  return (
+setView(false)
+}else{
+
+setView(true)
+}
+  
+ } 
+MediumZoom('.gallery',{margin:50})
+ if(view){ return (
     <Grid item xs={12} md={6}>
-      <CardActionArea component="a" href="/activitiesView">
+      <CardActionArea component="a" >
         <Card className={classes.card}>
           <div className={classes.cardDetails}>
             <CardContent>
@@ -43,15 +64,50 @@ export default function ActivityPost(props) {
               <Typography variant="subtitle1" color="primary">
              See {post.title}
               </Typography>
+              {post.image.length?post.image.map((image)=>(<div class="gallery">
+
+    <img onClick={handleView}src={image} alt="Cinque Terre" width="100" height="400"/>
+  
+
+</div>)):null}
             </CardContent>
           </div>
-          <Hidden xsDown>
-            <CardMedia className={classes.cardMedia} image={post.image} title={post.imageTitle} />
-          </Hidden>
+        
         </Card>
       </CardActionArea>
     </Grid>
-  );
+  );}else{
+  return (
+   <Grid item xs={12} md={6}>
+      <CardActionArea component="a">
+        <Card className={classes.card}>
+          <div className={classes.cardDetails}>
+            <CardContent>
+              <Typography component="h2" variant="h5">
+                {post.title}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {post.date}
+              </Typography>
+              <Typography variant="subtitle1" paragraph>
+                {post.description}
+              </Typography>
+              <Typography variant="subtitle1" color="primary">
+             See {post.title}
+              </Typography>
+              {post.image.length?post.image.map((image)=>(<div class="gallery1">
+
+    <img onClick={handleView} src={image} alt="Cinque Terre" width="100" height="400"/>
+  
+
+</div>)):null}
+            </CardContent>
+          </div>
+        
+        </Card>
+      </CardActionArea>
+    </Grid>
+  )}
 }
 
 ActivityPost.propTypes = {

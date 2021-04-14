@@ -197,7 +197,7 @@ this.setState({
       <div class="container wow fadeInUp">
         <div class="row">
           <div class="col-md-12">
-            <h3 class="section-title">Explore Communities</h3>
+            <h3 class="section-title">Communities You joined</h3>
             <div class="section-title-divider"></div>
            
             <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField onChange={this.handleSearch} label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
