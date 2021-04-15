@@ -141,7 +141,7 @@ console.log(ele)
                  
         },[])
            useEffect(()=>{
-          axios.get(`http://localhost:8080/com/userMainCom/sajeenthiran`,{
+          axios.get(`http://localhost:8080/com/userMainCom/sajeendran`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
@@ -166,12 +166,14 @@ console.log(ele)
       </AppBar>
       <main>
         {/* Hero unit */}
-    
+   
         <div id="joinSubcommunity">
+        
+       
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
            <Grid container spacing={4}>
-            {joinedSubCom.map((card) => (
+            {joinedSubCom?(joinedSubCom.map((card) => (
               <Grid item key={card.key} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -207,7 +209,7 @@ console.log(ele)
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))):null}
             <br/>  <br/>  <br/>  <br/>  <br/>
           </Grid>
           

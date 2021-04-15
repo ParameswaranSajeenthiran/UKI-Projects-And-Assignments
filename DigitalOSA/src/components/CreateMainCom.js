@@ -9,7 +9,7 @@ import SignInSide from "./SignUp";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-
+import AuthService from "../services/auth.service";
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import Link from '@material-ui/core/Link';
@@ -81,7 +81,9 @@ this.state={name:"",
 numMembers:"",
 motto:"",
 bankAcc:"",
-subCom:[]
+subCom:[],
+ loading: false,
+      message: ""
 
   }
   }
@@ -161,7 +163,7 @@ prevPage=()=>{
  )
 }
 
-  handleSubmit1=()=>{
+ handleSubmit1=()=>{
    
       axios.post("http://localhost:8080/com",{
        "name":this.state.name,
@@ -189,7 +191,38 @@ prevPage=()=>{
       
          }
 
-  
+  handleLogin = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      message: "",
+      loading: true
+    });
+
+    AuthService.createMain(this.state.name, this.state.motto,this.state.bankAcc)
+      .then((response) => {
+        this.props.history.push("/createdMainCom");
+        window.location.reload();
+         localStorage.setItem("MainId",response.data.id);
+              localStorage.setItem("MainName",this.state.name);
+                    localStorage.setItem("MainMotto",this.state.motto);
+                    localStorage.setItem("MainNumMembers",this.state.numMembers) ;
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          loading: false,
+          message: resMessage
+        });
+      }
+    );
+  }
    
     
     componentDidMount(){
@@ -424,7 +457,7 @@ render(){
               color="primary"
               className={classes.submit}
               
-              onClick={this.handleSubmit1}>
+              onClick={this.handleLogin}>
                        Create Main Community
             </Button>
             <Grid container>

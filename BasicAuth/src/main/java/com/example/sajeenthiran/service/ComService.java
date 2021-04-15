@@ -101,19 +101,25 @@ CustomRepository customRepository;
 						
 							if(mainCom.isPresent()){
 								
-							
+								System.out.println(mainCom);
 						SubCom newSubCom=subComRepostiory.save(subCom);
+				System.out.println(subCom);
 						
 						List<SubCom> newSubCom1=new ArrayList<>();
-						newSubCom1.add(subCom);
+						System.out.println(newSubCom1);
 						
 						MainCommunity main=mainCom.get();
-						newSubCom1.addAll(main.getSubCom());
-						main.setSubCom(newSubCom1);
-						String subId=mainComRepository.save(main).getId();
+						System.out.print(main);
+List<SubCom>subComList=main.getSubCom();					
+						System.out.println(subComList);
+						subComList.add(subComList.size(),newSubCom);
+						System.out.println(subCom);
+						main.setSubCom(subComList);
+						System.out.println(subCom);
 						
+						MainCommunity updatedMainCom=mainComRepository.save(main);
 								
-									return  new ResponseEntity<>(subId, HttpStatus.CREATED);
+									return  new ResponseEntity<>(updatedMainCom, HttpStatus.CREATED);
 							}else {
 									return ResponseEntity.badRequest()
 											.body(new MessageResponse("Error: Main Community does not exist!"));

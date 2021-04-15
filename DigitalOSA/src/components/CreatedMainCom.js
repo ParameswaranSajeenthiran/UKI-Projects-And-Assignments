@@ -86,7 +86,7 @@ const cards = [
  }
  ];
 
-export default function SubComList() {
+export default function CreatedMainCom() {
   const [anchorEl, setAnchorEl] = React.useState(null);
     const [userName, setUserName] = React.useState(JSON.parse(localStorage.getItem("user")).username);
 
@@ -101,42 +101,11 @@ const [motto,setMotto]=useState(localStorage.getItem("MainId"));
 const [numMembers,setNumMembers]=useState(localStorage.getItem("MainNumMembers"));
 console.log(userName)
 console.log(id)
- useEffect(()=>{
-          axios.get(`http://localhost:8080/com/${id}`,{
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-            }
-        })
-                .then(response=>{
-                 console.log(response.data)
-                 setSubCom(response.data)
-          
-                })
-        },[])
-        
+
          
- useEffect(()=>{
-          axios.get(`http://localhost:8080/com/userSubCom?user=sajeendran&mainCom=${id}`,{
-    
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuUDpzYWplZTEyMw=='
-            }
-        })
-                .then(response=>{
-                 console.log(response.data)
-                 setJoinedSubCom(response.data)
-          
-                })
-        },[])
+
         
-       useEffect(()=>{
-           AuthService.getJoinedSubCom(userName, id)
-           .then(response=>{
-                 console.log(response.data)
-                 setJoinedSubCom(response.data)
-          
-                })
-        },[])  
+      
 
 useEffect(()=>{
          localStorage.removeItem("subId")
@@ -190,13 +159,9 @@ const mainFeaturedPost = {
            
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
+              
                 <Grid item>
-                  <Button href="#joinSubcommunity" variant="contained"  color="primary">
-                    Join SubCommunity
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <a href="/Form">
+                  <a href="/createSubCom">
                   <Button variant="outlined" color="primary">
                     Create SubCommunity
                   </Button>

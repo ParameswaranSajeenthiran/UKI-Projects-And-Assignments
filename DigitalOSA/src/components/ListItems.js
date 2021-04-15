@@ -12,11 +12,21 @@ import AssignmentIcon from '@material-ui/icons/Assignment';
 import DateAndTimePickers from './DatePicker';
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem href="/mainCom" onClick={()=>{
+    localStorage.removeItem("joinedSubId")
+    localStorage.removeItem("joinedSubName")
+    localStorage.removeItem("joinedSubMotto")
+    localStorage.removeItem("joinedSubNumMembers")
+    localStorage.removeItem("subId")
+    localStorage.removeItem("subName")
+    localStorage.removeItem("subMotto")}
+    } button>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
-      <ListItemText primary="Dashboard" />
+       <a href="/mainCom">
+      <ListItemText primary="Go to Main community" />
+       </a>
     </ListItem>
     <ListItem button>
       <ListItemIcon>

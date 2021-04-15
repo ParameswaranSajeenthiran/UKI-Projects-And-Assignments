@@ -17,6 +17,7 @@ import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import AuthService from "../services/auth.service";
 
 import { makeStyles } from '@material-ui/core/styles';
 function Copyright() {
@@ -80,7 +81,10 @@ export default class CreateSubCom extends Component {
 this.state={name:"",
 numMem:"",
 motto:"",
-bankAcc:""
+bankAcc:"",
+id:localStorage.getItem("MainId"),
+ loading: false,
+      message: ""
 
   }
   }
@@ -189,7 +193,35 @@ prevPage=()=>{
   
     }
 
-  
+    handleLogin = (e) => {
+    e.preventDefault();
+
+    this.setState({
+      message: "",
+      loading: true
+    });
+
+    AuthService.createSub(this.state.id,this.state.name, this.state.motto,this.state.bankAcc)
+      .then(() => {
+        this.props.history.push("/subCom");
+        window.location.reload();
+      },
+      error => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+
+        this.setState({
+          loading: false,
+          message: resMessage
+        });
+      }
+    );
+  }
+   
     
     
     
@@ -417,7 +449,7 @@ render(){
               variant="contained"
               color="primary"
               className={classes.submit}
-              onClick={this.handleSubmit1}
+              onClick={this.handleLogin}
             >
               Create  SubCommunity
             </Button>

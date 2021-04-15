@@ -260,9 +260,9 @@ setDescription(e.target.value)
                   <Button href="#joinSubcommunity" variant="contained"  color="primary">
                     Add Event
                   </Button>
-            {events.map((post) => (
+            {events.length?(events.map((post) => (
               <ActivityPost key={post.title} post={post} />
-            ))}
+            ))):null}
           </Grid>
           <Grid container spacing={5} className={classes.mainGrid}>
             <Grid item>

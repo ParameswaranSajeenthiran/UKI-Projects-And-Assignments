@@ -31,10 +31,12 @@ import Hero from "./components/Hero";
 import SearchCommunity from "./components/SearchCommunity";
 import ChatApp from "./components/Chat";
 import CreateMainCom from "./components/CreateMainCom";
+import CreatedMainCom from "./components/CreatedMainCom";
 import SubComList from "./components/SubComList";
 import MainComList from "./components/MainComList";
 import MainComCreating from "./components/MainComCreating";
 import Dashboard from "./components/Dashboard";
+import JoinedDashboard from "./components/JoinedDashboard";
 import Reports from "./components/Reports";
 import ReportsView from "./components/ReportView";
 import Activities from "./components/Activities";
@@ -116,10 +118,14 @@ changeSubCommunity=()=>{
   })
 }
   render() {
-    
+      const user1=JSON.parse(localStorage.getItem("user"))
+
+     const subCom=localStorage.getItem("joinedSubId")
     const { currentUser, showAdminBoard } = this.state;
 
-    
+    if(user1!=null&&subCom!==null){return(
+ <JoinedDashboard/>
+ ) }else{ 
     return (
 
    <div>
@@ -274,6 +280,7 @@ changeSubCommunity=()=>{
                <Route exact path="/about" component={About} />
                <Route exact path="/blog" component={Blog} />
                <Route exact path="/createSubCom" component={CreateSubCom} /> 
+                      <Route exact path="/createdMainCom" component={CreatedMainCom} /> 
                <Route exact path="/community" component={SubCommunity} />
                <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
@@ -283,12 +290,13 @@ changeSubCommunity=()=>{
               <Route exact path="/mainComCreating" component={MainComCreating} />
               <Route path="/mainCom" component={SubComList} />
               <Route path="/subCom" component={Dashboard} />  
-              <Route path="/reports" component={Reports} /> 
+              <Route path="/reports" component={Doc} /> 
               <Route path="/doc" component={Doc} /> 
                <Route path="/spreadSheet" component={SpreadSheet} /> 
 		 <Route path="/slide" component={Slide} /> 
               <Route path="/activities" component={Activities} /> 
               <Route path="/activitiesView" component={ActivitiesView} /> 
+                 <Route exact path="/joinedSubCom" component={JoinedDashboard} />
              </Switch>
 
  
@@ -354,7 +362,7 @@ E */}
   </Router>
 </div>
     );
-
+}
     // return (
     //   <Router>
     //     <div className="app">

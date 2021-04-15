@@ -18,21 +18,22 @@ public class MainCommunity {
 @Id
 private String id;
 
-@NotBlank
+
 @Size(max = 20)
 private String name;
 
-@NotBlank
+
 @Size(max = 50)
 private String numMembers;
 
-@NotBlank
+
 @Size(max = 50)
 private String motto;
-@NotBlank
+
 @Size(max = 50)
 private String bankAcc;
 
+private String coverPhoto;
 
 @DBRef
 private List<SubCom>subCom;
@@ -42,7 +43,7 @@ private List<SubCom>subCom;
 
 
 public MainCommunity(String id, @NotBlank @Size(max = 20) String name, @NotBlank @Size(max = 50) String numMembers,
-		@NotBlank @Size(max = 50) String motto, @NotBlank @Size(max = 50) String bankAcc, List<SubCom> subCom) {
+		@NotBlank @Size(max = 50) String motto, @NotBlank @Size(max = 50) String bankAcc,String coverPhoto, List<SubCom> subCom) {
 	super();
 	this.id = id;
 	this.name = name;
@@ -50,6 +51,13 @@ public MainCommunity(String id, @NotBlank @Size(max = 20) String name, @NotBlank
 	this.motto = motto;
 	this.bankAcc = bankAcc;
 	this.subCom = subCom;
+	this.coverPhoto=coverPhoto;
+}
+public String getCoverPhoto() {
+	return coverPhoto;
+}
+public void setCoverPhoto(String coverPhoto) {
+	this.coverPhoto = coverPhoto;
 }
 public String getId() {
 	return id;

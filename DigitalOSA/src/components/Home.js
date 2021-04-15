@@ -15,6 +15,7 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import { Chat } from "@material-ui/icons";
 import ChatApp from "./Chat";
 import MainComList from "./MainComList";
+import JoinedDashboard from "./JoinedDashboard";
 const style = {
   root: {
     minWidth: 275,
@@ -159,9 +160,14 @@ this.setState({
 }
 }
   render() {
- 
+   const user1=JSON.parse(localStorage.getItem("user"))
+
+     const subCom=localStorage.getItem("joinedSubId")
+
     const{communities}=this.state
- 
+ if(user1!=null&&subCom!==null){return(
+ <JoinedDashboard/>
+ ) }else{
     return (
       <React.Fragment>
 
@@ -195,6 +201,7 @@ this.setState({
  
 <section id="services">
       <div class="container wow fadeInUp">
+       { user1!=null?(
         <div class="row">
           <div class="col-md-12">
             <h3 class="section-title">Communities You joined</h3>
@@ -203,7 +210,7 @@ this.setState({
             <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField onChange={this.handleSearch} label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
           </div>
         </div>
-
+):null}
         <div class="row">
 
 <MainComList/>
@@ -306,5 +313,6 @@ this.setState({
       </React.Fragment>
       
     );
+    }
   }
 }
