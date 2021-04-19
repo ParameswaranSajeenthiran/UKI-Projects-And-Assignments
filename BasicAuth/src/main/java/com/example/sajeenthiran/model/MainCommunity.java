@@ -33,7 +33,7 @@ private String motto;
 @Size(max = 50)
 private String bankAcc;
 
-private String coverPhoto;
+private List coverPhoto;
 
 @DBRef
 private List<SubCom>subCom;
@@ -43,7 +43,7 @@ private List<SubCom>subCom;
 
 
 public MainCommunity(String id, @NotBlank @Size(max = 20) String name, @NotBlank @Size(max = 50) String numMembers,
-		@NotBlank @Size(max = 50) String motto, @NotBlank @Size(max = 50) String bankAcc,String coverPhoto, List<SubCom> subCom) {
+		@NotBlank @Size(max = 50) String motto, @NotBlank @Size(max = 50) String bankAcc,List coverPhoto, List<SubCom> subCom) {
 	super();
 	this.id = id;
 	this.name = name;
@@ -53,10 +53,10 @@ public MainCommunity(String id, @NotBlank @Size(max = 20) String name, @NotBlank
 	this.subCom = subCom;
 	this.coverPhoto=coverPhoto;
 }
-public String getCoverPhoto() {
+public List getCoverPhoto() {
 	return coverPhoto;
 }
-public void setCoverPhoto(String coverPhoto) {
+public void setCoverPhoto(List coverPhoto) {
 	this.coverPhoto = coverPhoto;
 }
 public String getId() {

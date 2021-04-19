@@ -22,7 +22,8 @@ import { mainListItems, secondaryListItems } from './ListItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Orders from './Orders';
-
+import GooglePay from './GooglePay';
+import Stripe from './Stripe'
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -122,7 +123,7 @@ export default function Dashboard(){
 
       
         
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const [name,setName]=React.useState(localStorage.getItem("subName"));
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -150,9 +151,8 @@ export default function Dashboard(){
     {name}
           </Typography>
           <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
+              <GooglePay />
+         <Stripe />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -180,6 +180,7 @@ export default function Dashboard(){
             {/* Chart */}
             <Grid item xs={12} md={8} lg={9}>
               <Paper className={fixedHeightPaper}>
+           
                 <Chart />
               </Paper>
             </Grid>
@@ -192,6 +193,7 @@ export default function Dashboard(){
             {/* Recent Orders */}
             <Grid item xs={12}>
               <Paper className={classes.paper}>
+            
                 <Orders />
               </Paper>
             </Grid>

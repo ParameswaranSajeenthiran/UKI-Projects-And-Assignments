@@ -14,7 +14,7 @@ class Hero extends Component{
     <div class="hero-container">
       <div class="wow fadeIn">
         <div class="hero-logo">
-          <img class="" src="assets/img/logo.png" alt="Imperial"/>
+          <img style={{width:"100px",height:"100px"}} src="https://previews.123rf.com/images/lumut/lumut1511/lumut151100256/47789223-community-care-logo-vector-concept-engagement-togetherness.jpg" alt="Imperial"/>
         </div>
 
         <h1>DeTechCom</h1>

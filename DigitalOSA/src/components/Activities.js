@@ -18,6 +18,7 @@ import post1 from './blog-post.1.md';
 import post2 from './blog-post.2.md';
 import post3 from './blog-post.3.md';
 import ActivityPost from './ActivityPosts';
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
 //import { makeStyles } from '@material-ui/core/styles';
 //import TextField from '@material-ui/core/TextField';
 
@@ -206,7 +207,8 @@ const submit=()=>{
                  console.log(response.data)
                 
           
-                })
+                });
+                  window.location.reload();
                 
     
 }
@@ -243,24 +245,25 @@ setDescription(e.target.value)
   </a>
   <div class="desc">Add a description of the image here</div>
 </div>)):null}
-      {image[4]}
+    
         <main>
           <MainFeaturedPost post={mainFeaturedPost} />
-          
+       
           <Grid container spacing={4}>
-          <TextField  onChange={changeTitle}   fullWidth  label="Event Name " variant="filled"></TextField>
-          <TextField onChange={changeDescription}      fullWidth  label="Event Description" variant="filled"></TextField>
-<input type="file" multiple onChange={onFileChangeHandler }/>
-<div> {image.length?image.map((image)=><img style={styles.image} src={image}/>):null}
+             <div> {image.length?image.map((image)=><img style={styles.image} src={image}/>):null}
 {renderPhotos(selectedImage)}
 </div>
-          <Button href="#joinSubcommunity" variant="contained"  color="primary">
-                    upload iamges
-                  </Button><Button onClick={submit}>submit</Button>
-                  <Button href="#joinSubcommunity" variant="contained"  color="primary">
-                    Add Event
+          <TextField  onChange={changeTitle}   fullWidth  label="Event Name " variant="filled"></TextField>
+          <TextField onChange={changeDescription}      fullWidth  label="Event Description" variant="filled"></TextField>
+
+<input type="file"  id="photo" multiple onChange={onFileChangeHandler }/>
+ <Button variant="contained" color="primary"> <label className="photo" htmlFor="photo"><AddAPhotoIcon fontSize="large"/></label>        </Button>
+
+      
+                  <Button variant="contained" onClick={submit} color="primary">
+                    Upload Event
                   </Button>
-            {events.length?(events.map((post) => (
+            {events.length?(events.reverse().map((post) => (
               <ActivityPost key={post.title} post={post} />
             ))):null}
           </Grid>

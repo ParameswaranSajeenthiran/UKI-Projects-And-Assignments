@@ -1,5 +1,6 @@
 package com.example.sajeenthiran.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class Events {
@@ -8,13 +9,21 @@ private String mainCom;
 private List image;
 private String description;
 private String title;
-public Events(String subCom, String mainCom, List image, String description, String title) {
+private Date date;
+public Events(String subCom, String mainCom, List image, String description, String title,Date date) {
 	super();
 	this.subCom = subCom;
 	this.mainCom = mainCom;
 	this.image = image;
 	this.description = description;
 	this.title = title;
+	this.date=date;
+}
+public Date getDate() {
+	return date;
+}
+public void setDate(Date date) {
+	this.date = date;
 }
 public String getSubCom() {
 	return subCom;

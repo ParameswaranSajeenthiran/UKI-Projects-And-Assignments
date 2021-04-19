@@ -37,7 +37,8 @@ class AuthService {
   motto,
   numMembers,
   bankAcc,
-  subCom:[]
+  subCom:[],
+  coverPhoto:[]
   },{  headers: {
           'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
       }})

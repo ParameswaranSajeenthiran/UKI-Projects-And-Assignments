@@ -202,9 +202,14 @@ prevPage=()=>{
     });
 
     AuthService.createSub(this.state.id,this.state.name, this.state.motto,this.state.bankAcc)
-      .then(() => {
-        this.props.history.push("/subCom");
+      .then((response) => {
+      localStorage.setItem("subId",response.data.id);
+              localStorage.setItem("subName",this.state.name);
+                    localStorage.setItem("subMotto",this.state.motto);
+        this.props.history.push("/createdMainCom");
         window.location.reload();
+        console.log(response.data)
+         
       },
       error => {
         const resMessage =
@@ -449,6 +454,7 @@ render(){
               variant="contained"
               color="primary"
               className={classes.submit}
+              href="/createdMainCom"
               onClick={this.handleLogin}
             >
               Create  SubCommunity

@@ -88,18 +88,48 @@ const cards = [
 
 export default function SubComList() {
   const [anchorEl, setAnchorEl] = React.useState(null);
-    const [userName, setUserName] = React.useState(JSON.parse(localStorage.getItem("user")).username);
+    const [userName, setUserName] = React.useState(localStorage.getItem("username"));
 
-  const user1=JSON.parse(localStorage.getItem("user")).username
- 
+const  [show, setShow] = React.useState([]);
+
+
+
+
+   const [search, setSearch] = React.useState("");
 const [joined,setJoined]=useState(true);
 const [subCom,setSubCom]=useState([]);
 const [joinedSubCom,setJoinedSubCom]=useState([]);
 const [id,setId]=useState(localStorage.getItem("MainId"));
 const [name,setName]=useState(localStorage.getItem("MainName"));
 const [motto,setMotto]=useState(localStorage.getItem("MainId"));
-const [numMembers,setNumMembers]=useState(localStorage.getItem("MainNumMembers"));
+const [image,setImage]=useState(localStorage.getItem("MainImage"));
 console.log(userName)
+
+const handleSearch=(ele)=>{
+setSearch(ele.target.value)
+if(search==""){
+
+axios.get(`http://localhost:8080/com/${id}`,{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+                .then(response=>{
+                 console.log(response.data)
+                 setSubCom(response.data)
+          
+                })
+   
+
+console.log(search)
+
+}else{
+//console.log(data.filter((item)=>item.title.toLowerCase().indexOf(this.state.search)>-1))
+const  searched=subCom.filter((item)=>item.name.toLowerCase().includes(search))
+console.log(searched)
+setSubCom(searched)
+}
+}
 console.log(id)
  useEffect(()=>{
           axios.get(`http://localhost:8080/com/${id}`,{
@@ -116,7 +146,7 @@ console.log(id)
         
          
  useEffect(()=>{
-          axios.get(`http://localhost:8080/com/userSubCom?user=sajeendran&mainCom=${id}`,{
+          axios.get(`http://localhost:8080/com/userSubCom?user=${userName}d&mainCom=${id}`,{
     
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuUDpzYWplZTEyMw=='
@@ -124,6 +154,7 @@ console.log(id)
         })
                 .then(response=>{
                  console.log(response.data)
+                 console.log(id)
                  setJoinedSubCom(response.data)
           
                 })
@@ -140,6 +171,7 @@ console.log(id)
 
 useEffect(()=>{
          localStorage.removeItem("subId")
+          localStorage.setItem("joinedSubCom","")
           localStorage.removeItem("subName")
              localStorage.removeItem("subMotto")
                 localStorage.removeItem("subNumMembers")
@@ -149,12 +181,40 @@ useEffect(()=>{
                 localStorage.removeItem("joinedSubNumMembers")
                  
         },[])
+        useEffect(()=>{
+        
+        if(joinedSubCom.length!=0){
+    setSubCom(subCom.filter((item)=>{
+joinedSubCom.map((join)=>{
+if(item.id.includes(join.id)){
+return false}else{return true}
+})
+
+}
+))
+     console.log(show)            
+     }   },[])
+     
+     const joinedS=()=>{
+       if(joinedSubCom.length!=0){
+    setShow(subCom.filter((item)=>{
+joinedSubCom.map((join)=>{
+if(item.id.includes(join.id)){
+return false}else{return true}
+})
+
+}
+))
+     console.log(show)            
+     }
+     }
+
 
 const mainFeaturedPost = {
   title: name,
   description:
     "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image: 'https://source.unsplash.com/random',
+  image:image!=null?(image):('https://source.unsplash.com/random'),
   imgText: 'main image description',
   linkText: 'Continue reading…',
 };
@@ -174,6 +234,7 @@ const mainFeaturedPost = {
     <React.Fragment>
 
       <CssBaseline />
+    
       <AppBar position="relative">
         {/* <Toolbar>
           <CameraIcon className={classes.icon} />
@@ -186,7 +247,7 @@ const mainFeaturedPost = {
         {/* Hero unit */}
         <MainFeaturedPost post={mainFeaturedPost} />
      
-       
+    
            
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
@@ -207,28 +268,28 @@ const mainFeaturedPost = {
        
    
         <div id="joinSubcommunity">
-        { user1!=null?(   <div class="row">
-          <div class="col-md-12">
+        { joinedSubCom!=null&&joinedSubCom!=0?(   <div class="row">
+          <div class="col-md-12"><br/><br/>
             <h3 class="section-title">Communities You joined</h3>
-            <div class="section-title-divider"></div>
            
-            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
           </div>
         </div> ):null}
-         <Container className={classes.cardGrid} maxWidth="md">
+      {joinedSubCom.length?(   <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {joinedSubCom?(joinedSubCom.map((card) => (
+            {joinedSubCom.length?(joinedSubCom.map((card) => (
+            
               <Grid item key={card} xs={12} sm={6} md={4}>
+              
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                        image={card.coverPhoto=!null?(card.coverPhoto):('https://source.unsplash.com/random')}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                       {card.name}
+                  {card.name}
                     </Typography>
                     <Typography>
                     {/* {card.Des} */}
@@ -237,44 +298,7 @@ const mainFeaturedPost = {
                   </CardContent>
                   <CardActions>
             
-                   <Button aria-describedby={id1} variant="contained" color="primary" >
-        join
-      </Button>
-      <Popover
-        id1={id1}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <Typography className={classes.typography}>joined succefully</Typography>
-      </Popover>
-                   
-                   <Button onClick={()=>{if(user1!=null){axios.post("http://localhost:8080/com/joinSub",
-                   {"subCom":card.id,
-                   "memberJoined":"sajeenthiran",
-                   "isMember":true },{
-                    
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-            }
-        }).then((res)=>{console.log(res)});
-        localStorage.setItem("joinedSubId",card.id)
-                    localStorage.setItem("joinedSubName",card.name)
-                    localStorage.setItem("joinedSubMotto",card.motto)
-                    localStorage.setItem("joinedSubNumMembers",card.numMembers) }} } size="small" color="primary">    Join
-                      {/* <Alert variant="filled" severity="success">
-                            Join successfully
-                        </Alert> */}
-                    </Button>
-                   
+                     
                    <Button  href="/subCom"onClick={()=>{localStorage.setItem("subId",card.id)
                     localStorage.setItem("subName",card.name)
                     localStorage.setItem("subMotto",card.motto)
@@ -287,18 +311,26 @@ const mainFeaturedPost = {
               </Grid>
             ))):null}
           </Grid>
-        </Container>
+        </Container>):null}
         
         
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
+          <div class="row">
+          <div class="col-md-12">
+            <h3 class="section-title">Explore Communities</h3>
+            <div class="section-title-divider"></div>
+           
+            <p class="section-description">join communities and create strong relationship among community members<br/><br/> <TextField fullWidth  label ="search" onChange={handleSearch} variant="filled"placeholder=""></TextField> </p>
+          </div>
+        </div>
           <Grid container spacing={4}>
-            {subCom.map((card) => (
+            {subCom.length!=0?(subCom.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={card.coverPhoto=!null?(card.coverPhoto):('https://source.unsplash.com/random')}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -312,29 +344,9 @@ const mainFeaturedPost = {
                   </CardContent>
                   <CardActions>
             
-                   <Button aria-describedby={id1} variant="contained" color="primary" >
-        join
-      </Button>
-      <Popover
-        id1={id1}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <Typography className={classes.typography}>joined succefully</Typography>
-      </Popover>
-                   
-                   <Button  onClick={()=>{axios.post("http://localhost:8080/com/joinSub",
+                 { userName==null?(<div><Button onClick={()=>{alert("try clicking VIEW, you have to signUp or Login to join a community")}}size="small" color="primary">join</Button></div>):(<div><Button  href="/subCom" onClick={()=>{axios.post("http://localhost:8080/com/joinSub",
                    {"subCom":card.id,
-                   "memberJoined":localStorage.getItem("username"),
+                   "memberJoined":userName,
                    "isMember":true,
                    "mainCom":localStorage.getItem("MainId") },{
                     
@@ -342,6 +354,7 @@ const mainFeaturedPost = {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         }).then((res)=>{console.log(res)});
+        
         localStorage.setItem("joinedSubId",card.id)
                     localStorage.setItem("joinedSubName",card.name)
                     localStorage.setItem("joinedSubMotto",card.motto)
@@ -349,11 +362,15 @@ const mainFeaturedPost = {
                     localStorage.setItem("subId",card.id)
                     localStorage.setItem("subName",card.name)
                     localStorage.setItem("subMotto",card.motto)
-                    localStorage.setItem("subNumMembers",card.numMembers) }}  size="small" color="primary">    Join
+                    localStorage.setItem("subNumMembers",card.numMembers) ;
+                    alert("Succefully joined the Sub Community")
+                      
+                    
+                    }}  size="small" color="primary">    Join
                       {/* <Alert variant="filled" severity="success">
                             Join successfully
                         </Alert> */}
-                    </Button>
+                    </Button></div>)}
                    
                    <Button  href="/subCom"onClick={()=>{localStorage.setItem("subId",card.id)
                     localStorage.setItem("subName",card.name)
@@ -365,7 +382,7 @@ const mainFeaturedPost = {
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))):<div>  <h1>No Match found</h1>  </div>}
           </Grid>
         </Container>
         </div>

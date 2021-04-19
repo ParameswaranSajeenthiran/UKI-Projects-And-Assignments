@@ -12,7 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Login from "./Login";
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+export default function SignIn() {
   const classes = useStyles();
 
   return (
@@ -72,6 +72,7 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Log In
           </Typography>
+          <Login/>
           <form className={classes.form} noValidate>
             <TextField
               variant="outlined"

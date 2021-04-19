@@ -82,6 +82,8 @@ numMembers:"",
 motto:"",
 bankAcc:"",
 subCom:[],
+coverPhoto:[],
+image:[],
  loading: false,
       message: ""
 
@@ -199,9 +201,9 @@ prevPage=()=>{
       loading: true
     });
 
-    AuthService.createMain(this.state.name, this.state.motto,this.state.bankAcc)
+    AuthService.createMain(this.state.name,this.state.motto,this.state.bankAcc)
       .then((response) => {
-        this.props.history.push("/createdMainCom");
+        this.props.history.push("/createSubCom");
         window.location.reload();
          localStorage.setItem("MainId",response.data.id);
               localStorage.setItem("MainName",this.state.name);
@@ -233,7 +235,26 @@ prevPage=()=>{
     }
     
     
-
+  onFileChangeHandler = (e) => {
+    e.preventDefault();
+    var elements=[];
+    console.log(e.target.files.length)
+    let files = e.target.files
+    console.log(files)
+    for(let i = 0; i<e.target.files.length; i++){
+    let reader = new FileReader()
+    reader.readAsDataURL(files[i])
+    reader.onload = (e) => {
+      console.log(" Imagedata",e.target.result)
+      elements.push(e.target.result)
+    this.setState({coverPhoto:this.state.coverPhoto.push(elements)})
+    }
+   console.log(this.state.coverPhoto)
+  }
+  localStorage.setItem("image",JSON.stringify(this.state.coverPhoto[0]))
+  this.setState({image:[...this.state.image,JSON.parse(localStorage.getItem("image"))]})
+  console.log(this.state.image)
+  }
 
 render(){
 
@@ -325,7 +346,7 @@ render(){
               label="Country"
               fullWidth
               autoComplete="shipping country"
-            />
+            /><input type="file" multiple onChange={this.onFileChangeHandler }/>
           </Grid>
           <Grid item xs={12}>
             <FormControlLabel

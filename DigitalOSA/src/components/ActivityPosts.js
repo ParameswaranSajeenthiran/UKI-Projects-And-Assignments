@@ -30,7 +30,7 @@ height:"150px"}}
 
 
 export default function ActivityPost(props) {
-const [view,setView]=React.useState(false);
+const [view,setView]=React.useState(true);
   const classes = useStyles();
   const [image,setImage]=React.useState([]);
   const { post } = props;
@@ -47,7 +47,7 @@ setView(true)
  } 
 MediumZoom('.gallery',{margin:50})
  if(view){ return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} >
       <CardActionArea component="a" >
         <Card className={classes.card}>
           <div className={classes.cardDetails}>
@@ -78,7 +78,7 @@ MediumZoom('.gallery',{margin:50})
     </Grid>
   );}else{
   return (
-   <Grid item xs={12} md={6}>
+   <Grid item xs={12} >
       <CardActionArea component="a">
         <Card className={classes.card}>
           <div className={classes.cardDetails}>

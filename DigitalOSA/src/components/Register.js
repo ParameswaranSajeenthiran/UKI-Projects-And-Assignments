@@ -5,7 +5,8 @@ import AuthService from "../services/auth.service";
 import { Button ,Card, CardContent, Grid, FormControl, Typography, TextField } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
 import SignInSide from "./SignUp";
-
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const style = {
   root: {
@@ -127,16 +128,11 @@ handleRegister = (e) => {
     return (
 <div>
 
-      <div>
-         <SignInSide/>
-      </div>
+     
       <Grid container>
      
-        <Grid item xs={4}/>
-        
-        <Grid item xs={3}>
-          <Card style={style.root}>
-              <CardContent>
+    
+      
                 <form onSubmit={this.handleRegister}>
                   {!this.state.successful && (
                   <Grid container spacing={1}>
@@ -145,6 +141,56 @@ handleRegister = (e) => {
                       </Grid>
                       
                       <Grid item xs={12}>
+                          <TextField
+              variant="outlined"
+                      onChange={this.onChangeUsername}
+              margin="normal"
+              required
+              fullWidth
+              id="userName"
+              label="Username"
+              name="UserName"
+              autoComplete="username"
+              autoFocus
+            />
+              <TextField
+                  onChange={this.onChangeEmail}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
+            />    <br/><h5 style={style.pwd}>{this.state.emailValidation}</h5>
+            <TextField
+            onChange={this.onChangePassword}
+        
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            /><br/><h5 style={style.pwd}>{this.state.pwdValidation}</h5>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+             
+            >
+              Sign Up
+            </Button>
                         <FormControl fullWidth>
                           <label htmlFor="username">Username</label>
                           <TextField type="text" name="username" value={this.state.username}
@@ -182,10 +228,8 @@ handleRegister = (e) => {
                   )
                   }
                 </form>
-              </CardContent>
-        </Card>
-        </Grid>
-        <Grid item xs={4}/>
+            
+     
       </Grid>
       </div>
     );

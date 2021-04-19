@@ -1,4 +1,4 @@
-import React from 'react';
+
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -7,7 +7,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Title from './Title';
-
+import React, { useState ,useEffect} from 'react';
+import Sidebar from './Sidebar';
+import axios from 'axios'
 // Generate Order Data
 //function createData(id, date, name, Place, Community, Fund) {
   //return { id, date, name, Place, Community, Fund };
@@ -15,6 +17,8 @@ import Title from './Title';
 function createData(id, date, name, Place, Community, Fund) {
   return { id, date, name, Place, Community, Fund };
 }
+
+
 
 const rows = [
   createData(0, '16 Mar, 2019', 'Elvis Presley', 'Tupelo, MS', '1994Maths',200000.00),
@@ -35,6 +39,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Orders() {
+
+const [donations,setDonations]=React.useState([]);
+const [subCom,setSubCom]=useState(localStorage.getItem("subId"));
+ useEffect(()=>{
+          axios.get(`http://localhost:8080/com/donations${subCom}`,{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+                .then(response=>{
+                 console.log(response.data)
+                 setDonations(response.data)
+          
+                })
+        },[])
+ 
   const classes = useStyles();
   return (
     <React.Fragment>
@@ -50,13 +70,13 @@ export default function Orders() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {donations.map((row) => (
             <TableRow key={row.id}>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.Place}</TableCell>
-              <TableCell>{row.Community}</TableCell>
-              <TableCell align="right">{row.Fund}</TableCell>
+           
+              <TableCell>{row.title}</TableCell>
+              
+             
+              <TableCell align="right">10000UDS</TableCell>
             </TableRow>
           ))}
         </TableBody>

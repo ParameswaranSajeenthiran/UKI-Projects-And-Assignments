@@ -119,7 +119,7 @@ List<SubCom>subComList=main.getSubCom();
 						
 						MainCommunity updatedMainCom=mainComRepository.save(main);
 								
-									return  new ResponseEntity<>(updatedMainCom, HttpStatus.CREATED);
+									return  new ResponseEntity<>(newSubCom, HttpStatus.CREATED);
 							}else {
 									return ResponseEntity.badRequest()
 											.body(new MessageResponse("Error: Main Community does not exist!"));
@@ -313,7 +313,66 @@ mainCommunities.add(mainCom);
 		}catch (Exception e) {
 		    return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
 		}
+	}public ResponseEntity<?>mainCoverPhoto(Events event){
+		try {
+//			
+			
+//		List<SubCom> subCom=new ArrayList<>();
+//		subCom.addAll(mainCom.getSubCom());
+//		List<SubCom> newSubCom= subComRepostiory.saveAll(subCom);
+//		mainCom.setSubCom(newSubCom);
+		Date d=new Date();
+		event.setDate(d);
+		d.getDay();System.out.println(d);
+		eventsRepository.save(event);
+		System.out.println(d);
+	List img=event.getImage();
+	System.out.println(d);
+		String id=event.getMainCom();
+		System.out.println(d);
+		Optional<MainCommunity>mainCom=mainComRepository.findById(id);
+		System.out.println(d);
+	MainCommunity main=mainCom.get();
+	System.out.println(d);
+	main.setCoverPhoto(img);
+	System.out.println(d);
+	mainComRepository.save(main);
+	System.out.println(d);
+			return  new ResponseEntity<>(main, HttpStatus.CREATED);
+					
+			
+		}catch (Exception e) {
+		    return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+		}
 	}
+	
+	
+	public ResponseEntity<?>subCoverPhoto(Events event){
+		try {
+//			
+			
+//		List<SubCom> subCom=new ArrayList<>();
+//		subCom.addAll(mainCom.getSubCom());
+//		List<SubCom> newSubCom= subComRepostiory.saveAll(subCom);
+//		mainCom.setSubCom(newSubCom);
+		Date d=new Date();
+		event.setDate(d);
+		
+		eventsRepository.save(event);
+	List img=event.getImage();
+		String id=event.getSubCom();
+		Optional<SubCom>subCom=subComRepostiory.findById(id);
+	SubCom sub=	subCom.get();
+	sub.setCoverPhoto(img);
+	subComRepostiory.save(sub);
+			return  new ResponseEntity<>(sub, HttpStatus.CREATED);
+					
+			
+		}catch (Exception e) {
+		    return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+		}
+	}
+	
 	public ResponseEntity<List<Events>>getAllEvents(String id){
 		try {
 		
@@ -327,5 +386,24 @@ mainCommunities.add(mainCom);
 		    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	
+	public ResponseEntity<List<Events>>getDonations(String id){
+		try {
+		
+		    List<Events> events=eventsRepository.findBySubComAndDescription(id,"donation");
+		
+		    if (events.isEmpty()) {
+		      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		    }
+		    return new ResponseEntity<>(events, HttpStatus.OK);
+		} catch (Exception e) {
+		    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
+
+	
+	
 	
 }

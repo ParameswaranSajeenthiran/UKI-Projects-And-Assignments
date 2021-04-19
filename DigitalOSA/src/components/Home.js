@@ -16,6 +16,7 @@ import { Chat } from "@material-ui/icons";
 import ChatApp from "./Chat";
 import MainComList from "./MainComList";
 import JoinedDashboard from "./JoinedDashboard";
+import Link from '@material-ui/core/Link';
 const style = {
   root: {
     minWidth: 275,
@@ -34,6 +35,9 @@ const style = {
   style:"border:0",
   loading:"lazy"
   
+  },  footer: {
+    backgroundColor:"grey",
+    padding: "10px",
   },
   
     video:{align:"center"}
@@ -100,6 +104,20 @@ const communities1=[
 
 
 ]
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 export default class Home extends Component {
   constructor(props) {
     super(props);
@@ -162,10 +180,10 @@ this.setState({
   render() {
    const user1=JSON.parse(localStorage.getItem("user"))
 
-     const subCom=localStorage.getItem("joinedSubId")
+     const subCom=localStorage.getItem("subId")
 
     const{communities}=this.state
- if(user1!=null&&subCom!==null){return(
+ if(subCom!=null){return(
  <JoinedDashboard/>
  ) }else{
     return (
@@ -186,12 +204,12 @@ this.setState({
         <div class="row">
           <div class="col-md-8">
             <h3 class="subscribe-title">search for communities</h3>
-            <p class="subscribe-text">Join our 1000+ subscribers and get access to the latest tools, freebies, product announcements and much more!</p>
+            <p class="subscribe-text">Join our 1000+ communities and get access to the project Documentions,event galleries and much more!</p>
           </div>
         
           <div class="col-md-4 subscribe-btn-container">
           
-            <a class="subscribe-btn" href="#services">search</a>
+            <a class="subscribe-btn" href="#exploreCom">search</a>
           </div>
         </div>
       </div>
@@ -207,7 +225,6 @@ this.setState({
             <h3 class="section-title">Communities You joined</h3>
             <div class="section-title-divider"></div>
            
-            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> <TextField onChange={this.handleSearch} label ="search" variant="filled"placeholder=""></TextField><CancelIcon/></p>
           </div>
         </div>
 ):null}
@@ -234,9 +251,7 @@ this.setState({
        
       </div>
     </section>
-   <div style={style.video}> 
-    <iframe width="1000" height="600" src="https://www.youtube.com/embed/7I5EeEoc8VA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-   </div> 
+
 <section id="contact">
       <div class="container wow fadeInUp">
         <div class="row">
@@ -303,7 +318,15 @@ this.setState({
         </div>
       </div>
     </section>
-
+ <footer style={style.footer}>
+        <Typography variant="h6" align="center" gutterBottom>
+          Footer
+        </Typography>
+        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
+          Something here to give the footer a purpose!
+        </Typography>
+        <Copyright/>
+      </footer>
      </div>
 
  

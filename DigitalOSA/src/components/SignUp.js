@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
+import Register from "./Register";
 
 function Copyright() {
   return (
@@ -57,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignInSide() {
+export default function SignIn() {
   const classes = useStyles();
 
   return (
@@ -72,6 +73,7 @@ export default function SignInSide() {
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
+          <Register/>
           <form className={classes.form} noValidate>
              <TextField
               variant="outlined"

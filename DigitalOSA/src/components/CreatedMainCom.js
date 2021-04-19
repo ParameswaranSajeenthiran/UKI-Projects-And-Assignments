@@ -20,6 +20,9 @@ import Popover from '@material-ui/core/Popover';
 import { TextField,Button,FormControl } from "@material-ui/core";
 import CancelIcon from '@material-ui/icons/Cancel';
 import AuthService from "../services/auth.service";
+import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import PublishIcon from '@material-ui/icons/Publish';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 // import Dashboard from "./Dashboard";
 // import Alert from '@material-ui/lab/Alert';
 
@@ -87,10 +90,12 @@ const cards = [
  ];
 
 export default function CreatedMainCom() {
+const [image,setImage]=React.useState([]);
+const [subImage,setSubImage]=React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
-    const [userName, setUserName] = React.useState(JSON.parse(localStorage.getItem("user")).username);
+    const [userName, setUserName] = React.useState(localStorage.getItem("username"));
 
-  const user1=JSON.parse(localStorage.getItem("user")).username
+
  
 const [joined,setJoined]=useState(true);
 const [subCom,setSubCom]=useState([]);
@@ -98,32 +103,77 @@ const [joinedSubCom,setJoinedSubCom]=useState([]);
 const [id,setId]=useState(localStorage.getItem("MainId"));
 const [name,setName]=useState(localStorage.getItem("MainName"));
 const [motto,setMotto]=useState(localStorage.getItem("MainId"));
+const [subId,setSubId]=useState(localStorage.getItem("subId"));
 const [numMembers,setNumMembers]=useState(localStorage.getItem("MainNumMembers"));
 console.log(userName)
 console.log(id)
 
          
 
-        
-      
+    const submit=()=>{
+  axios.post("http://localhost:8080/com/mainCoverPhoto",{
+	"title":"updated cover",
+	"description":"updated coer photo",
+	"subCom":"creating",
+	"mainCom":id,
+	image:image
+},{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+         .then(response=>{
+                 console.log(response.data);
+                localStorage.setItem("MainImage",image[0]);
+          
+                })
+                
+    
+}   
 
-useEffect(()=>{
-         localStorage.removeItem("subId")
-          localStorage.removeItem("subName")
-             localStorage.removeItem("subMotto")
-                localStorage.removeItem("subNumMembers")
-                  localStorage.removeItem("joinedSubId")
-          localStorage.removeItem("joinedSubName")
-             localStorage.removeItem("joinedSubMotto")
-                localStorage.removeItem("joinedSubNumMembers")
-                 
+    const submitSub=()=>{
+  axios.post("http://localhost:8080/com/subCoverPhoto",{
+	"title":"updated cover",
+	"description":"updated coer photo",
+	"subCom":subId,
+	"mainCom":"created",
+	image:subImage
+},{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+         .then(response=>{
+                 console.log(response.data)
+                 localStorage.setItem("MainImage",image);
+                
+          
+                })
+                
+    
+}    
+       
+       useEffect(()=>{
+          axios.get(`http://localhost:8080/com/${id}`,{
+            headers: {
+                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+            }
+        })
+                .then(response=>{
+                 console.log(response.data)
+                 setSubCom(response.data)
+          
+                })
         },[])
+        
+         
+
 
 const mainFeaturedPost = {
   title: name,
   description:
     "Multiple lines of text that form the lede, informing new readers quickly and efficiently about what's most interesting in this post's contents.",
-  image: 'https://source.unsplash.com/random',
+  image: image.length?(image):('https://source.unsplash.com/random'),
   imgText: 'main image description',
   linkText: 'Continue reading…',
 };
@@ -138,7 +188,42 @@ const mainFeaturedPost = {
   const id1 = open ? 'simple-popover' : undefined;
 
   const classes = useStyles();
-
+const onFileChangeHandler = (e) => {
+    e.preventDefault();
+    var elements=[];
+    console.log(e.target.files.length)
+    let files = e.target.files
+    console.log(files)
+    for(let i = 0; i<e.target.files.length; i++){
+    let reader = new FileReader()
+    reader.readAsDataURL(files[i])
+    reader.onload = (e) => {
+      console.log(" Imagedata",e.target.result)
+      elements.push(e.target.result)
+    setImage(elements)
+    }
+   console.log(elements)
+  }
+  
+  
+  }
+  const onFileChangeHandlerSub = (e) => {
+    e.preventDefault();
+    var elements=[];
+    console.log(e.target.files.length)
+    let files = e.target.files
+    console.log(files)
+    for(let i = 0; i<e.target.files.length; i++){
+    let reader = new FileReader()
+    reader.readAsDataURL(files[i])
+    reader.onload = (e) => {
+      console.log(" Imagedata",e.target.result)
+      elements.push(e.target.result)
+    setSubImage(elements)
+    }
+   console.log(subImage)
+  };
+  }
   return (
     <React.Fragment>
 
@@ -154,9 +239,15 @@ const mainFeaturedPost = {
       <main>
         {/* Hero unit */}
         <MainFeaturedPost post={mainFeaturedPost} />
+        <div style={{height:"10px"}}>  <ButtonGroup color="primary" aria-label="outlined primary button group">
+     <Button variant="contained" color="primary"> <label className="photo" htmlFor="coverPhoto"><AddAPhotoIcon fontSize="large"/>Edit cover photo</label>        </Button>
      
-       
-           
+          <Button variant="contained" color="primary"  fontSize="large" onClick={submit}>< PublishIcon fontSize="large"/>Upload</Button>
+        
+      </ButtonGroup>
+
+    
+         </div>  <input name="coverPhoto" type="file" id="coverPhoto" multiple onChange={onFileChangeHandler }/>
             <div className={classes.heroButtons}>
               <Grid container spacing={2} justify="center">
               
@@ -172,7 +263,7 @@ const mainFeaturedPost = {
        
    
         <div id="joinSubcommunity">
-        { user1!=null?(   <div class="row">
+        { userName!=null?(   <div class="row">
           <div class="col-md-12">
             <h3 class="section-title">Communities You joined</h3>
             <div class="section-title-divider"></div>
@@ -188,7 +279,7 @@ const mainFeaturedPost = {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+     image="https://source.unsplash.com/random"
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -197,7 +288,7 @@ const mainFeaturedPost = {
                     </Typography>
                     <Typography>
                     {/* {card.Des} */}
-                      This is a media card. You can use this section to describe the content.
+                      This is a media card. You can use this section to describe the content. 
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -222,7 +313,7 @@ const mainFeaturedPost = {
         <Typography className={classes.typography}>joined succefully</Typography>
       </Popover>
                    
-                   <Button onClick={()=>{if(user1!=null){axios.post("http://localhost:8080/com/joinSub",
+                   <Button onClick={()=>{if(userName=null){axios.post("http://localhost:8080/com/joinSub",
                    {"subCom":card.id,
                    "memberJoined":"sajeenthiran",
                    "isMember":true },{
@@ -258,21 +349,24 @@ const mainFeaturedPost = {
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
-            {subCom.map((card) => (
+            {subCom.length?(subCom.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={subImage.length?(subImage):('https://source.unsplash.com/random')}
                     title="Image title"
                   />
+                   <Button variant="contained" color="primary"> <label className="photo" htmlFor="cardphoto"><AddAPhotoIcon fontSize="large"/></label>        </Button>       <Button variant="contained" color="primary"  fontSize="large" onClick={submitSub}>< PublishIcon fontSize="large"/></Button>
+                  <input type="file" id="cardphoto" multiple onChange={onFileChangeHandlerSub }/>
+          <Button onClick={submitSub}>submit</Button>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                        {card.name}
                     </Typography>
                     <Typography>
                     {/* {card.Des} */}
-                      This is a media card. You can use this section to describe the content.
+                      This is a media card. You can use this section to describe the content.  
                     </Typography>
                   </CardContent>
                   <CardActions>
@@ -330,7 +424,7 @@ const mainFeaturedPost = {
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))):null}
           </Grid>
         </Container>
         </div>

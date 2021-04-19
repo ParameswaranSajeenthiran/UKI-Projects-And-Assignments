@@ -32,6 +32,7 @@ import SearchCommunity from "./components/SearchCommunity";
 import ChatApp from "./components/Chat";
 import CreateMainCom from "./components/CreateMainCom";
 import CreatedMainCom from "./components/CreatedMainCom";
+
 import SubComList from "./components/SubComList";
 import MainComList from "./components/MainComList";
 import MainComCreating from "./components/MainComCreating";
@@ -45,6 +46,9 @@ import Slide from "./components/Slide";
 import axios from 'axios'
 import SpreadSheet from "./components/SpreadSheet";
 import ActivitiesView from "./components/ActivitiesView";
+import SignIn from "./components/SignIn";
+import SignUp from "./components/SignUp";
+import GooglePay from './components/GooglePay';
 
 // import "./assets/img/favicon.png" 
 // import "./assets/img/apple-touch-icon.png"
@@ -120,12 +124,10 @@ changeSubCommunity=()=>{
   render() {
       const user1=JSON.parse(localStorage.getItem("user"))
 
-     const subCom=localStorage.getItem("joinedSubId")
+     const subCom=localStorage.getItem("subId")
     const { currentUser, showAdminBoard } = this.state;
 
-    if(user1!=null&&subCom!==null){return(
- <JoinedDashboard/>
- ) }else{ 
+  
     return (
 
    <div>
@@ -158,13 +160,13 @@ changeSubCommunity=()=>{
                    <strong>Home</strong>
                  </Button>
                  <Button href="/blog" color='inherit'>
-                     <strong>blog</strong>
+                     <strong></strong>
                    </Button>
                    <Button href="/chat" color='inherit'>
                      <strong>chat</strong>
                    </Button>
                    <Button href="/about" color='inherit'>
-                     <strong>about us</strong>
+                     <strong></strong>
                    </Button>
                    {/* {showModeratorBoard && (
                   <Button href="/mod" color='inherit'>
@@ -273,14 +275,15 @@ changeSubCommunity=()=>{
 
   
                <Route exact path={["/", "/home"]} component={Home} />
-               <Route exact path="/login" component={Login} />
+               <Route exact path="/login" component={SignIn} />
                <Route exact path="/createCommunity" component={CreateMainCom} />
-               <Route exact path="/register" component={Register} />
+               <Route exact path="/register" component={SignUp} />
                <Route exact path="/profile" component={Profile} />
                <Route exact path="/about" component={About} />
                <Route exact path="/blog" component={Blog} />
                <Route exact path="/createSubCom" component={CreateSubCom} /> 
                       <Route exact path="/createdMainCom" component={CreatedMainCom} /> 
+               
                <Route exact path="/community" component={SubCommunity} />
                <Route exact path="/profile" component={Profile} />
               <Route path="/user" component={BoardUser} />
@@ -297,6 +300,7 @@ changeSubCommunity=()=>{
               <Route path="/activities" component={Activities} /> 
               <Route path="/activitiesView" component={ActivitiesView} /> 
                  <Route exact path="/joinedSubCom" component={JoinedDashboard} />
+                    <Route exact path="/googlePay" component={GooglePay} />
              </Switch>
 
  
@@ -362,7 +366,7 @@ E */}
   </Router>
 </div>
     );
-}
+
     // return (
     //   <Router>
     //     <div className="app">

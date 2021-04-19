@@ -111,10 +111,23 @@ public ResponseEntity<?> getMaincomByUser(@PathVariable String user){
 public ResponseEntity<?> createEvent( @RequestBody Events event) {
  return comService.createEvent(event);
 }
+@PostMapping("/mainCoverPhoto")
+public ResponseEntity<?> mainCoverPhoto( @RequestBody Events event) {
+ return comService.mainCoverPhoto(event);
+}
+@PostMapping("/subCoverPhoto")
+public ResponseEntity<?> subCoverPhoto( @RequestBody Events event) {
+ return comService.subCoverPhoto(event);
+}
 
 
 @GetMapping("/events{id}")
 public ResponseEntity<List<Events>>getEvents( @PathVariable String id){
 	return comService.getAllEvents(id);
+}
+
+@GetMapping("/donations{id}")
+public ResponseEntity<List<Events>>getDonations( @PathVariable String id){
+	return comService.getDonations(id);
 }
 }

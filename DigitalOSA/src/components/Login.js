@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
-
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import { Card, CardContent, Typography, CardActionArea, Grid, FormControl, CircularProgress } from '@material-ui/core';
 import { Face } from '@material-ui/icons';
 import SignInSide from "./SignIn";
@@ -51,7 +55,8 @@ export default class Login extends Component {
 
     AuthService.login(this.state.username, this.state.password)
       .then(() => {
-        this.props.history.push("/profile");
+     
+      
         window.location.reload();
       },
       error => {
@@ -76,13 +81,47 @@ export default class Login extends Component {
   
       <Grid container spacing={3}>
       
-              <SignInSide/>
-        <Grid item xs={3}/>
-        <Grid item xs={6}>
-          <Card style={style.root}>
-            <CardActionArea>
-              <CardContent>
-                <Form onSubmit={this.handleLogin}>
+                          <Form onSubmit={this.handleLogin}>
+        
+                    <TextField
+                         onChange={this.onChangeUsername}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="userName"
+              label="Username"
+              name="UserName"
+              autoComplete="email"
+              autoFocus
+            />
+            <TextField
+               onChange={this.onChangePassword}
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+            
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+      
+            >
+              Log In
+            </Button>
+   
                   <Grid container spacing={1}>
                       <Grid item xs={12} alignItems='center'>
                         {/* <Face style={{ fontSize: 80 }}/> */}
@@ -120,11 +159,8 @@ export default class Login extends Component {
                     </div>
                   )}
                 </Form>
-              </CardContent>
-            </CardActionArea>
-        </Card>
-        </Grid>
-        <Grid item xs={3}/>
+           
+  
       </Grid>
     );
   }

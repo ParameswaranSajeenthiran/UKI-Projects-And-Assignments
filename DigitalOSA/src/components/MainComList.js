@@ -16,6 +16,11 @@ import Link from '@material-ui/core/Link';
 import SubComList from './SubComList';
 import Dashboard from './Dashboard';
 import axios from 'axios'
+import { Alert, AlertTitle } from '@material-ui/lab';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+
+import CloseIcon from '@material-ui/icons/Close';
 import { TextField,FormControl } from "@material-ui/core";
 
 // import Dashboard from "./Dashboard";
@@ -57,12 +62,20 @@ const useStyles = makeStyles((theme) => ({
   cardMedia: {
     paddingTop: '56.25%', // 16:9
   },
+  noMatch:{
+  align:"center"},
   cardContent: {
     flexGrow: 1,
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
+  },
+   root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
   },
 }));
 
@@ -86,9 +99,12 @@ const cards = [
 
 
 export default function MainComList() {
+const [userName, setUserName] = React.useState(localStorage.getItem("username"));
   const classes = useStyles();
-  const user1=JSON.parse(localStorage.getItem("user"))
-  if(user1!=null){ const username1=user1.username}
+
+  const [open, setOpen] = React.useState(true);
+  const [search, setSearch] = React.useState("");
+
  
 const [subCom,setSubCom]=useState([]);
 const [joinedSubCom,setJoinedSubCom]=useState([]);
@@ -96,7 +112,31 @@ const [id,setId]=useState(222);
 
 const [mainCom,setMainCom]=useState([]);
 
+const handleSearch=(ele)=>{
+setSearch(ele.target.value)
+if(search==""){
 
+  axios.get('http://localhost:8080/com',{
+    headers: {
+        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+    }
+})
+        .then(response=>{
+        console.log(response.data)
+         setMainCom(response.data)
+        
+        }
+        )
+
+console.log(search)
+
+}else{
+//console.log(data.filter((item)=>item.title.toLowerCase().indexOf(this.state.search)>-1))
+const  searched=mainCom.filter((item)=>item.name.toLowerCase().includes(search))
+console.log(searched)
+setMainCom(searched)
+}
+}
  useEffect(()=>{
           axios.get("http://localhost:8080/com",{
             headers: {
@@ -112,18 +152,6 @@ const [mainCom,setMainCom]=useState([]);
  
         
 
- useEffect(()=>{
-          axios.get("http://localhost:8080/com/606c83cae31c030df10e4cc5",{
-            headers: {
-                'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
-            }
-        })
-                .then(response=>{
-                 console.log(response.data)
-                 setSubCom(response.data)
-          
-                })
-        },[])
       
        
 const handleClick=(ele)=>{
@@ -137,16 +165,17 @@ console.log(ele)
          localStorage.removeItem("MainId")
           localStorage.removeItem("MainName")
              localStorage.removeItem("MainMotto")
-                localStorage.removeItem("MainNumMembers")
-                 
+                localStorage.removeItem("MainNumMembers") ;
+                 	localStorage.removeItem("MainImage")  ;              
         },[])
-           useEffect(()=>{
-          axios.get(`http://localhost:8080/com/userMainCom/sajeendran`,{
+           useEffect(()=>{  ;
+          axios.get(`http://localhost:8080/com/userMainCom/${userName}`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         })
                 .then(response=>{
+             
                  console.log(response.data)
                  setJoinedSubCom(response.data)
           
@@ -166,15 +195,17 @@ console.log(ele)
       </AppBar>
       <main>
         {/* Hero unit */}
-   
+         
         <div id="joinSubcommunity">
-        
-       
+     
         <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
+          
+          
            <Grid container spacing={4}>
-            {joinedSubCom?(joinedSubCom.map((card) => (
+            {joinedSubCom.length?(joinedSubCom.map((card) => (
               <Grid item key={card.key} xs={12} sm={6} md={4}>
+        
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
@@ -195,6 +226,7 @@ console.log(ele)
                     <Button href="/mainCom"onClick={()=>{localStorage.setItem("MainId",card.id)
                     localStorage.setItem("MainName",card.name)
                     localStorage.setItem("MainMotto",card.motto)
+                    localStorage.setItem("MainImage",card.coverPhoto[0])
                     localStorage.setItem("MainNumMembers",card.numMembers) }} size="small" color="primary">
                       Join
                       {/* <Alert variant="filled" severity="success">
@@ -214,22 +246,24 @@ console.log(ele)
           </Grid>
           
             </Container>
-            <Container className={classes.cardGrid} maxWidth="md">
+            <Container id="exploreCom" className={classes.cardGrid} maxWidth="md">
           <div class="row">
           <div class="col-md-12">
             <h3 class="section-title">Explore Communities</h3>
+            
+     
             <div class="section-title-divider"></div>
            
-            <p class="section-description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium<br/> </p>
+            <p class="section-description"><br/><br/> <TextField fullWidth  onChange={handleSearch} label ="search" variant="filled"placeholder=""></TextField> </p>
           </div>
         </div>
           <Grid container spacing={4}>
-            {mainCom.map((card) => (
+            {mainCom.length?(mainCom.reverse().map((card) => (
               <Grid item key={card.key} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={card.coverPhoto=!null?(card.coverPhoto):("https://source.unsplash.com/random")}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
@@ -243,39 +277,35 @@ console.log(ele)
                   </CardContent>
                   <CardActions>
                     
-                    <Button href="/mainCom"onClick={()=>{localStorage.setItem("MainId",card.id)
+                 { userName==null?(<div><Button  variant="contained"  color="primary" onClick={()=>{alert("try clicking VIEW, you have to signUp or Login to join a community")}}size="small" color="primary">join</Button></div>):(<div><Button href="/mainCom"  variant="contained"  onClick={()=>{localStorage.setItem("MainId",card.id)
                     localStorage.setItem("MainName",card.name)
                     localStorage.setItem("MainMotto",card.motto)
-                    localStorage.setItem("MainNumMembers",card.numMembers) }} size="small" color="primary">
-                      Join
+                    localStorage.setItem("MainNumMembers",card.numMembers)
+                     localStorage.setItem("MainImage",card.coverPhoto[0]) }}  size="small" color="primary">    Join
                       {/* <Alert variant="filled" severity="success">
                             Join successfully
                         </Alert> */}
-                    </Button>
+                    </Button></div>)}
                
-                    <Button size="small" color="primary">
+                    <Button href="/subCom" onClick={()=>{localStorage.setItem("MainId",card.id)
+                    localStorage.setItem("MainName",card.name)
+                    localStorage.setItem("MainMotto",card.motto)
+                    localStorage.setItem("MainNumMembers",card.numMembers)
+                     localStorage.setItem("MainImage",card.coverPhoto[0])}}size="small" color="primary">
                      View
                     </Button>
                     
                   </CardActions>
                 </Card>
               </Grid>
-            ))}
+            ))):<div className={classes.noMatch}>  <h1>No Match found</h1>  </div>}
           </Grid>
         </Container>
         </div>
  
       </main>
       {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
-        </Typography>
-        <Copyright/>
-      </footer>
+     
       {/* End footer */}
     </React.Fragment>
   );
