@@ -2,11 +2,19 @@ package com.example.sajeenthiran.service;
 
 import java.util.ArrayList;
 
+
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -65,6 +73,8 @@ CustomRepository customRepository;
 //		List<SubCom> newSubCom= subComRepostiory.saveAll(subCom);
 //		mainCom.setSubCom(newSubCom);
 		mainComRepository.save(mainCom);
+		
+		
 				
 			return  new ResponseEntity<>(mainCom, HttpStatus.CREATED);
 					}
@@ -74,15 +84,32 @@ CustomRepository customRepository;
 		}
 	}
 	
-	public ResponseEntity<List<MainCommunity>>getMainCom(){
+	public ResponseEntity<?>getMainCom(int pageSize,int pageNo,String sortBy, String direction){
 		try {
 		    List<MainCommunity> mainCommunities = new ArrayList<MainCommunity>();
 		    mainComRepository.findAll().forEach(mainCommunities::add);
-		
+		    System.out.println(pageNo);
+			  System.out.println(pageSize);
+			  System.out.println(sortBy);
+			  Map<String, Object> response = new HashMap<>();
+			    Sort sort = Sort.by(sortBy);
+			    
+			    Sort sort1=Sort.by(Sort.Direction.DESC,sortBy);
+			    System.out.println(sort1);
+				Pageable pageable = PageRequest.of(pageNo, pageSize,sort1);
+				
+				 System.out.println(pageable);
+			    Page<MainCommunity> page = mainComRepository.findAll(pageable);
+			    System.out.println(page);
+			    response.put("data", page.getContent());
+			    System.out.println(response);
+			    response.put("Total no of pages", page.getTotalPages());
+			    response.put("Total no of elements", page.getTotalElements());
+			    response.put("Current page no", page.getNumber());
 		    if (mainCommunities.isEmpty()) {
 		      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		    }
-		    return new ResponseEntity<>(mainCommunities, HttpStatus.OK);
+		    return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 		    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -387,20 +414,68 @@ mainCommunities.add(mainCom);
 		}
 	}
 	
-	public ResponseEntity<List<Events>>getDonations(String id){
+	public ResponseEntity<?>getDonations(String id,int pageNo,int pageSize,String sortBy){
 		try {
 		
-		    List<Events> events=eventsRepository.findBySubComAndDescription(id,"donation");
-		
-		    if (events.isEmpty()) {
+		 
+		    System.out.println(pageNo);
+			  System.out.println(pageSize);
+			  System.out.println(sortBy);
+			  Map<String, Object> response = new HashMap<>();
+			    Sort sort = Sort.by(sortBy);
+			    
+			    Sort sort1=Sort.by(Sort.Direction.DESC,sortBy);
+			    System.out.println(sort1);
+				Pageable pageable = PageRequest.of(pageNo, pageSize,sort1);
+				
+				 System.out.println(pageable);
+			    Page<Events> page = eventsRepository.findBySubComAndDescription(id,"donation",pageable);
+			    System.out.println(page);
+			    response.put("data", page.getContent());
+			    System.out.println(response);
+			    response.put("Total no of pages", page.getTotalPages());
+			    response.put("Total no of elements", page.getTotalElements());
+			    response.put("Current page no", page.getNumber());
+		    if (page.isEmpty()) {
 		      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		    }
-		    return new ResponseEntity<>(events, HttpStatus.OK);
+		    return new ResponseEntity<>(response, HttpStatus.OK);
 		} catch (Exception e) {
 		    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
+	
+	public ResponseEntity<?>getDonationsA(String id,int pageNo,int pageSize,String sortBy){
+		try {
+		
+		 
+		    System.out.println(pageNo);
+			  System.out.println(pageSize);
+			  System.out.println(sortBy);
+			  Map<String, Object> response = new HashMap<>();
+			    Sort sort = Sort.by(sortBy);
+			    
+			    Sort sort1=Sort.by(Sort.Direction.ASC,sortBy);
+			    System.out.println(sort1);
+				Pageable pageable = PageRequest.of(pageNo, pageSize,sort1);
+				
+				 System.out.println(pageable);
+			    Page<Events> page = eventsRepository.findBySubComAndDescription(id,"donation",pageable);
+			    System.out.println(page);
+			    response.put("data", page.getContent());
+			    System.out.println(response);
+			    response.put("Total no of pages", page.getTotalPages());
+			    response.put("Total no of elements", page.getTotalElements());
+			    response.put("Current page no", page.getNumber());
+		    if (page.isEmpty()) {
+		      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		    }
+		    return new ResponseEntity<>(response, HttpStatus.OK);
+		} catch (Exception e) {
+		    return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 
 	

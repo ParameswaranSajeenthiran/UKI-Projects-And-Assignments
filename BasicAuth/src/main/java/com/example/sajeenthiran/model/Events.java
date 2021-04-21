@@ -10,7 +10,8 @@ private List image;
 private String description;
 private String title;
 private Date date;
-public Events(String subCom, String mainCom, List image, String description, String title,Date date) {
+private int amount;
+public Events(String subCom, String mainCom, List image, String description, String title,Date date,int amount) {
 	super();
 	this.subCom = subCom;
 	this.mainCom = mainCom;
@@ -18,6 +19,13 @@ public Events(String subCom, String mainCom, List image, String description, Str
 	this.description = description;
 	this.title = title;
 	this.date=date;
+	this.amount=amount;
+}
+public int getAmount() {
+	return amount;
+}
+public void setAmount(int amount) {
+	this.amount = amount;
 }
 public Date getDate() {
 	return date;

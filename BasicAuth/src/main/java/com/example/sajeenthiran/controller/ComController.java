@@ -52,8 +52,9 @@ public ResponseEntity<?> createCommunity( @RequestBody MainCommunity mainCom) {
 
 
 @GetMapping
-public ResponseEntity<List<MainCommunity>>getAllMainCommunity(){
-	return comService.getMainCom();
+public ResponseEntity<?>getAllMainCommunity(@RequestParam(value="pageNo",defaultValue="0") int pageNo,
+		@RequestParam(value="pageSize",defaultValue="0") int pageSize,@RequestParam(name = "sortBy", defaultValue = "id") String sortBy,@RequestParam(name = "sortDir", defaultValue = "ASC") String sortDir){
+	return comService.getMainCom(pageSize,pageNo,sortBy,sortDir);
 }
 @PostMapping("/{id}")
 private ResponseEntity<?> createSubCom(@RequestBody SubCom subCom, @PathVariable String id) {
@@ -127,7 +128,14 @@ public ResponseEntity<List<Events>>getEvents( @PathVariable String id){
 }
 
 @GetMapping("/donations{id}")
-public ResponseEntity<List<Events>>getDonations( @PathVariable String id){
-	return comService.getDonations(id);
+public ResponseEntity<?>getDonations( @PathVariable String id,@RequestParam(value="pageNo",defaultValue="0") int pageNo,
+		@RequestParam(value="pageSize",defaultValue="0") int pageSize,@RequestParam(name = "sortBy", defaultValue = "id") String sortBy){
+	return comService.getDonations(id,pageNo,pageSize,sortBy);
+}
+
+@GetMapping("/donations/ascending{id}")
+public ResponseEntity<?>getDonationsA( @PathVariable String id,@RequestParam(value="pageNo",defaultValue="0") int pageNo,
+		@RequestParam(value="pageSize",defaultValue="0") int pageSize,@RequestParam(name = "sortBy", defaultValue = "id") String sortBy){
+	return comService.getDonationsA(id,pageNo,pageSize,sortBy);
 }
 }

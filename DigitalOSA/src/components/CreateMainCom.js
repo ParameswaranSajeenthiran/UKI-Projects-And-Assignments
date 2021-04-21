@@ -205,6 +205,7 @@ prevPage=()=>{
       .then((response) => {
         this.props.history.push("/createSubCom");
         window.location.reload();
+        console.log(response.data)
          localStorage.setItem("MainId",response.data.id);
               localStorage.setItem("MainName",this.state.name);
                     localStorage.setItem("MainMotto",this.state.motto);
@@ -277,6 +278,7 @@ render(){
           <Grid item xs={12} sm={6}>
           
             <TextField onChange={this.changeName}
+           variant="outlined"
               required
               id="firstName"
               name="firstName"
@@ -286,73 +288,78 @@ render(){
             /><div>{this.state.comId}</div>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField      onChange={this.numMembers}
+            <TextField      onChange={this.motto}
          required
+        variant="outlined"
               id="lastName"
-              name="lastName"
-              label="number of members"
+              name="motto"
+              label="motto"
               fullWidth
               autoComplete="family-name"
             /><div>{this.state.name}</div>
           </Grid>
           <Grid item xs={12}>
             <TextField
+           variant="outlined"
           onChange={this.changeDescription }
               required
               id="address1"
               name="address1"
-              label="bank Account"
+              label="address line1"
               fullWidth
               autoComplete="shipping address-line1"
             /><div>{this.state.description}</div>
           </Grid>
+          
           <Grid item xs={12}>
             <TextField
+     variant="outlined"
               id="address2"
               name="address2"
-              label="bank"
+              label="adress line 2"
               fullWidth
               autoComplete="shipping address-line2"
             />
           </Grid>
+          
           <Grid item xs={12} sm={6}>
             <TextField onChange={this.changeId}
+          variant="outlined"
               required
               id="city"
               name="city"
-              label="motto"
+              label="city "
               fullWidth
               autoComplete="shipping address-level2"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField id="state" name="state" label="State/Province/Region" fullWidth />
+            <TextField variant="outlined" id="state" name="state" label="Bank Name" fullWidth />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+        variant="outlined"
               required
               id="zip"
               name="zip"
-              label="Zip / Postal code"
+              label="Bank Name"
               fullWidth
               autoComplete="shipping postal-code"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
+            variant="outlined"
               required
               id="country"
               name="country"
-              label="Country"
+              label="Telephone No"
               fullWidth
               autoComplete="shipping country"
             /><input type="file" multiple onChange={this.onFileChangeHandler }/>
           </Grid>
           <Grid item xs={12}>
-            <FormControlLabel
-              control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-              label="Use this address for payment details"
-            />
+          
           </Grid>
         </Grid></div>
   {

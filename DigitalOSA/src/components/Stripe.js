@@ -28,11 +28,9 @@ const [mainCom,setMainCom]=React.useState(localStorage.getItem("MainId"));
     );
      const { status } = response.data;
     console.log("Response:", response.data);
-    if (status === "success") {
+    
       toast("Success! Check email for details", { type: "success" });
-    } else {
-      toast("Something went wrong", { type: "error" });
-    };
+   
      axios.post("http://localhost:8080/com/events",{
 	"title":token.email,
 	"description":"donation",
@@ -59,7 +57,7 @@ const [mainCom,setMainCom]=React.useState(localStorage.getItem("MainId"));
       <StripeCheckout
         stripeKey="pk_test_51IhpT4IBqkG6qdaTShgZOOhkSmHpFdH351SbDC4fOAqHIUAWPpC8Bzm7WzjxDfl1sof6vFWqQZkRlaytX790yP5u00g3lKobMN"
         token={handleToken}
-        amount={100}
+        amount={10000}
         name="Tesla Roadster"
         billingAddress
         shippingAddress

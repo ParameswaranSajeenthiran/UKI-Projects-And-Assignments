@@ -10,6 +10,12 @@ import Title from './Title';
 import React, { useState ,useEffect} from 'react';
 import Sidebar from './Sidebar';
 import axios from 'axios'
+import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Button from '@material-ui/core/Button';
+import TablePagination from '@material-ui/core/TablePagination';
+import Pagination from '@material-ui/lab/Pagination';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 // Generate Order Data
 //function createData(id, date, name, Place, Community, Fund) {
   //return { id, date, name, Place, Community, Fund };
@@ -41,49 +47,83 @@ const useStyles = makeStyles((theme) => ({
 export default function Orders() {
 
 const [donations,setDonations]=React.useState([]);
+  const [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
+const [asc,setAsc]=React.useState("");
 const [subCom,setSubCom]=useState(localStorage.getItem("subId"));
- useEffect(()=>{
-          axios.get(`http://localhost:8080/com/donations${subCom}`,{
+
+ const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 3));
+    setPage(0);
+  };
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
+
+         useEffect(()=>{
+          axios.get(`http://localhost:8080/com/donations${asc}${subCom}?pageNo=${page-1}&pageSize=8&sortBy=amount`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         })
                 .then(response=>{
                  console.log(response.data)
-                 setDonations(response.data)
+                 setDonations(response.data.data)
           
                 })
-        },[])
+        },[page,asc])
  
   const classes = useStyles();
   return (
     <React.Fragment>
-      <Title>Recent Orders</Title>
+      <Title>Donations</Title>
+        
       <Table size="small">
         <TableHead>
           <TableRow>
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Place</TableCell>
-            <TableCell>Community</TableCell>
-            <TableCell align="right">Fund</TableCell>
+            <TableCell>Email</TableCell>
+         
+            <TableCell align="right"> 
+     <ArrowUpwardIcon color="primary"onClick={()=>{setAsc("/ascending")}}/> 
+     
+     <ArrowDownwardIcon color="primary"  onClick={()=>{setAsc("")}}/>
+       Fund </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {donations.map((row) => (
+     
+          {donations.length?(donations.map((row) => (
             <TableRow key={row.id}>
-           
-              <TableCell>{row.title}</TableCell>
-              
+                <TableCell>{row.image[1]}</TableCell>
+                      <TableCell>{row.image[2]}</TableCell>
+              <TableCell>{row.image[0]}</TableCell>
+          
+                <TableCell align="right">RS.{row.amount}.00</TableCell>
              
-              <TableCell align="right">10000UDS</TableCell>
+            
             </TableRow>
-          ))}
+          ))):<div>No Donations Yet ...</div>}
         </TableBody>
+      
       </Table>
+        <Pagination count={10} page={page} color="primary" onChange={handleChange} />
+        <TablePagination
+      component="div"
+      count={100}
+      page={page}
+      onChangePage={handleChangePage}
+      rowsPerPage={rowsPerPage}
+      onChangeRowsPerPage={handleChangeRowsPerPage}
+    />
       <div className={classes.seeMore}>
         <Link color="primary" href="#" onClick={preventDefault}>
-          See more 
+          
         </Link>
       </div>
     </React.Fragment>

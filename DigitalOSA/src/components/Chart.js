@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '@material-ui/core/styles';
 import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
 import Title from './Title';
-
+import axios from 'axios'
 // Generate Sales Data
 function createData(Month, Participants) {
   return { Month, Participants };
@@ -22,6 +22,7 @@ const data = [
 
 export default function Chart() {
   const theme = useTheme();
+
 
   return (
     <React.Fragment>

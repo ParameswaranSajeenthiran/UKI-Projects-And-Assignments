@@ -19,10 +19,10 @@ import axios from 'axios'
 import { Alert, AlertTitle } from '@material-ui/lab';
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
-
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import CloseIcon from '@material-ui/icons/Close';
 import { TextField,FormControl } from "@material-ui/core";
-
+import Pagination from '@material-ui/lab/Pagination';
 // import Dashboard from "./Dashboard";
 // import Alert from '@material-ui/lab/Alert';
 
@@ -105,7 +105,7 @@ const [userName, setUserName] = React.useState(localStorage.getItem("username"))
   const [open, setOpen] = React.useState(true);
   const [search, setSearch] = React.useState("");
 
- 
+ const [page,setPage]=React.useState(1);
 const [subCom,setSubCom]=useState([]);
 const [joinedSubCom,setJoinedSubCom]=useState([]);
 const [id,setId]=useState(222);
@@ -113,17 +113,28 @@ const [id,setId]=useState(222);
 const [mainCom,setMainCom]=useState([]);
 
 const handleSearch=(ele)=>{
-setSearch(ele.target.value)
-if(search==""){
-
-  axios.get('http://localhost:8080/com',{
+axios.get('http://localhost:8080/com?pageNo=1&pageSize=100&sortBy=id',{
     headers: {
         'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
     }
 })
         .then(response=>{
         console.log(response.data)
-         setMainCom(response.data)
+         setMainCom(response.data.data)
+        
+        }
+        )
+setSearch(ele.target.value)
+if(search==""){
+
+  axios.get('http://localhost:8080/com?pageNo=1&pageSize=100&sortBy=id',{
+    headers: {
+        'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
+    }
+})
+        .then(response=>{
+        console.log(response.data)
+         setMainCom(response.data.data)
         
         }
         )
@@ -138,20 +149,22 @@ setMainCom(searched)
 }
 }
  useEffect(()=>{
-          axios.get("http://localhost:8080/com",{
+          axios.get(`http://localhost:8080/com?pageNo=${page-1}&pageSize=6&sortBy=id`,{
             headers: {
                 'Authorization': 'Basic c2FqZWVudGhpcmFuOjEyMzQ1Ng=='
             }
         })
                 .then(response=>{
                  console.log(response.data)
-                 setMainCom(response.data)
+                 setMainCom(response.data.data)
           
                 })
-        },[])
+        },[page])
  
         
-
+  const handleChange = (event, value) => {
+    setPage(value);
+  };
       
        
 const handleClick=(ele)=>{
@@ -256,9 +269,11 @@ console.log(ele)
            
             <p class="section-description"><br/><br/> <TextField fullWidth  onChange={handleSearch} label ="search" variant="filled"placeholder=""></TextField> </p>
           </div>
-        </div>
+         
+        </div>  <Pagination count={10} page={page} color="primary" onChange={handleChange} />
           <Grid container spacing={4}>
-            {mainCom.length?(mainCom.reverse().map((card) => (
+           
+            {mainCom.length!=0?(mainCom.map((card) => (
               <Grid item key={card.key} xs={12} sm={6} md={4}>
                 <Card className={classes.card}>
                   <CardMedia
@@ -272,8 +287,19 @@ console.log(ele)
                     </Typography>
                     <Typography>
                     {/* {card.Des} */}
-                      This is a media card. You can use this section to describe the content.
+   Motto:{card.motto}
                     </Typography>
+                         <Typography>
+                    {/* {card.Des} */}
+                   Address:{card.bankAcc}
+                    </Typography>
+                    
+                         <Typography>
+                    {/* {card.Des} */}
+                  Telephone No:{card.numMem}
+                    </Typography>
+                    
+                    
                   </CardContent>
                   <CardActions>
                     

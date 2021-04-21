@@ -14,13 +14,14 @@ class Hero extends Component{
     <div class="hero-container">
       <div class="wow fadeIn">
         <div class="hero-logo">
-          <img style={{width:"100px",height:"100px"}} src="https://previews.123rf.com/images/lumut/lumut1511/lumut151100256/47789223-community-care-logo-vector-concept-engagement-togetherness.jpg" alt="Imperial"/>
+          <img style={{width:"100px",height:"100px"}} src="/home/pc/Desktop/github/javaScript/DigitalOSA/src/assets/img/logo" alt="logo"/>
         </div>
 
-        <h1>DeTechCom</h1>
-        <h2>We create strong bonding among communities<span class="typed" data-typed-items="beautiful graphics, functional websites, working mobile apps"></span></h2>
+        <h1>DE-COM-TECH</h1>
+        <h2><strong>DE</strong>volope <strong>COM</strong>munities through <strong>TECH
+</strong>nology<span class="typed" data-typed-items="beautiful graphics, functional websites, working mobile apps"></span></h2>
         <div class="actions">
-          <a href="#services" class="btn-get-started">join community </a>
+          <a href="#exploreCom" class="btn-get-started">join community </a>
           <a href="/createCommunity" class="btn-services">create comunity</a>
         </div>
       </div>
